@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test:ui": "npx playwright test",
-    "ui-mode": "npx playwright test --ui"
+    "ui-mode": "npx playwright test --ui",
+    "html-report": "npx playwright show-report"
   },
   "author": "",
   "license": "ISC",

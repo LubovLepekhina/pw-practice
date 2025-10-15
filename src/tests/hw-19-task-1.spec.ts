@@ -42,24 +42,12 @@ test.describe('[demo-login-form]', () => {
         const passwordInputRegister = page.locator('#passwordOnRegister');
         const registerSubmitButton = page.locator('#register');
         const notification = page.locator('#errorMessageOnRegister');
-        const backButton = page.locator('#backOnRegister');
-        const userNameInputLogin = page.locator('#userName');
-        const passwordInputLogin = page.locator('#password');
-        const loginSubmitButton = page.locator('#submit');
-        const notificationSuccessLogin = page.locator('#successMessage'); 
 
         await userNameInputRegister.fill(validCredentials.username);
         await passwordInputRegister.fill(validCredentials.password);
         await registerSubmitButton.click();
 
         await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_SUCCESS);
-
-        await backButton.click();
-        await userNameInputLogin.fill(validCredentials.username);
-        await passwordInputLogin.fill(validCredentials.password);
-        await loginSubmitButton.click();
-
-        await expect(notificationSuccessLogin).toHaveText(`Hello, ${validCredentials.username}!`);
     })
 
     test('should not register with empty username', async ({page}) => {

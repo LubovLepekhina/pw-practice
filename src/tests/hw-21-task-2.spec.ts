@@ -7,12 +7,11 @@
 
 import test, { expect, Page } from "@playwright/test";
 
-async function getTableRow(page: Page, email: string) {
+async function getTableRow(page: Page, email: string): Promise<Record<string, string>> {
     const table = page.locator('#table2');
     const headerRow = table.locator('thead th');
     const arrayOfHeaderText: string[] = await headerRow.allTextContents();
     arrayOfHeaderText.pop();
-    console.log(arrayOfHeaderText);
 
     const tableRows = table.locator('tbody > tr');
 
@@ -22,7 +21,6 @@ async function getTableRow(page: Page, email: string) {
     const cells = foundRow.locator('td');
     const arrayOfCellsText: string[] = await cells.allTextContents();
     arrayOfCellsText.pop();
-    console.log(arrayOfCellsText);
 
     expect(arrayOfHeaderText.length).toBe(arrayOfCellsText.length);
     const result = arrayOfHeaderText.reduce<Record<string, string>>((result, curr, i) => {
@@ -33,8 +31,15 @@ async function getTableRow(page: Page, email: string) {
 }
 
 test.describe('work with tables', () => {
-    const allEmails = ['jsmith@gmail.com', 'fbach@yahoo.com', 'jdoe@hotmail.com', 'tconway@earthlink.net'];
-    const expectedTable = [
+    interface ITableRow {
+        "Last Name": string,
+        "First Name": string,
+        Email: string,
+        Due: string,
+        "Web Site": string,
+    }
+    const allEmails: string[] = ['jsmith@gmail.com', 'fbach@yahoo.com', 'jdoe@hotmail.com', 'tconway@earthlink.net'];
+    const expectedTable: ITableRow[] = [
         {
             "Last Name": "Smith",
             "First Name": "John",
@@ -69,7 +74,6 @@ test.describe('work with tables', () => {
         test(`get table row by its email: ${allEmails[i]}`, async ({page}) => {
             await page.goto('https://the-internet.herokuapp.com/tables');
             const result = await getTableRow(page, allEmails[i]!);
-            console.log(result);
             expect(expectedTable[i]).toEqual(result);
         })
     }

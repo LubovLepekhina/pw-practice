@@ -11,7 +11,7 @@
 //   Password: обязательное
 
 import test, { expect } from "@playwright/test";
-import { invaliTestData } from '../data/register-data';
+import { invaliTestData } from 'data/hw-21/register-data';
 
 test.describe('[demo-login-form] Registration', () => {
     const url = 'https://anatoly-karpovich.github.io/demo-login-form/';

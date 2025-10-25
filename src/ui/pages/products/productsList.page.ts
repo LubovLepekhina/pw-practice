@@ -1,4 +1,6 @@
+import { IProductInTable } from "data/types/product.types";
 import { SalesPortalPage } from "../salesPortal.page";
+import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 
 export class ProductsListPage extends SalesPortalPage {
   readonly productsPageTitle = this.page.locator("h2.fw-bold");
@@ -7,8 +9,19 @@ export class ProductsListPage extends SalesPortalPage {
     this.page.locator("table tbody tr", { has: this.page.locator("td", { hasText: productName }) });
 
   readonly uniqueElement = this.addNewProductButton;
+  readonly firstRow = this.page.locator('table tbody tr').first();
 
   async clickAddNewProduct() {
     await this.addNewProductButton.click();
+  }
+
+  async getProductData(productName: string): Promise<IProductInTable> {
+    const [name, price, manufacturer, createdOn] = await this.tableRowByName(productName).locator('td').allInnerTexts();
+    return {
+      name: name!,
+      price: +price!.replace('$', ''),
+      manufacturer: manufacturer! as MANUFACTURERS,
+      createdOn: createdOn!
+    }
   }
 }

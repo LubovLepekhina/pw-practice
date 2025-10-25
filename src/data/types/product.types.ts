@@ -7,3 +7,7 @@ export interface IProduct {
   amount: number;
   notes?: string;
 }
+
+export interface IProductInTable extends Pick<IProduct, 'name' | 'price' | 'manufacturer'> {
+  createdOn: string
+}

@@ -2,9 +2,11 @@ import test, { expect } from "@playwright/test";
 import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
+import _ from "lodash";
 // import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 // import { IProduct } from "data/types/product.types";
 import { HomePage } from "ui/pages/home.page";
+import { LoginPage } from "ui/pages/login.page";
 import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 
@@ -81,21 +83,15 @@ test.describe("[Sales Portal] [Products]", async () => {
   });
 
   test("Add new product", async ({ page }) => {
+    const loginPage = new LoginPage(page);
     const homePage = new HomePage(page);
     const productsListPage = new ProductsListPage(page);
     const addNewProductPage = new AddNewProductPage(page);
 
-    //login page
-    const emailInput = page.locator("#emailinput");
-    const passwordInput = page.locator("#passwordinput");
-    const loginButton = page.locator("button[type='submit']");
-
-    await homePage.open();
-
-    await expect(emailInput).toBeVisible();
-    await emailInput.fill(credentials.username);
-    await passwordInput.fill(credentials.password);
-    await loginButton.click();
+    await loginPage.open();
+    await expect(loginPage.loginPageTitle).toBeVisible();
+    await loginPage.fillCredentials(credentials);
+    await loginPage.clickLoginButton();
 
     await homePage.waitForOpened();
     await homePage.clickOnViewModule("Products");
@@ -108,5 +104,11 @@ test.describe("[Sales Portal] [Products]", async () => {
     await productsListPage.waitForOpened();
     await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
     await expect(productsListPage.tableRowByName(productData.name)).toBeVisible();
+
+    const productFromTable = await productsListPage.getProductData(productData.name);
+    const actualProductData = _.omit(productFromTable, ['createdOn']);
+    const expectedProductData = _.omit(productData, ['amount', 'notes']);
+    expect(actualProductData).toEqual(expectedProductData);
+    await expect(productsListPage.firstRow).toContainText(productData.name);
   });
 });

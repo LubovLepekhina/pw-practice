@@ -89,7 +89,7 @@ test.describe("[Sales Portal] [Products]", async () => {
     const addNewProductPage = new AddNewProductPage(page);
 
     await loginPage.open();
-    await expect(loginPage.loginPageTitle).toBeVisible();
+    await expect(loginPage.title).toBeVisible();
     await loginPage.fillCredentials(credentials);
     await loginPage.clickLoginButton();
 

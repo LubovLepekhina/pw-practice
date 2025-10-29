@@ -24,7 +24,7 @@ test.describe('[Sales Portal] [Product Deletion]', async () => {
         await addNewProductPage.clickSave();
 
         await productsListPage.waitForOpened();
-        await expect(productsListPage.toastMessage).toHaveText(NOTIFICATIONS.PRODUCT_CREATED.trim());
+        await expect(productsListPage.toastMessage).toHaveText(NOTIFICATIONS.PRODUCT_CREATED);
         await productsListPage.closeNotification();
         await expect(productsListPage.tableRowByName(productData.name)).toBeVisible();
 
@@ -33,7 +33,7 @@ test.describe('[Sales Portal] [Product Deletion]', async () => {
         await productsListPage.deleteModal.clickDelete();
         await productsListPage.waitForOpened();
 
-        await expect(productsListPage.toastMessage).toHaveText(NOTIFICATIONS.PRODUCT_DELETED.trim());
+        await expect(productsListPage.toastMessage).toHaveText(NOTIFICATIONS.PRODUCT_DELETED);
         await expect(productsListPage.tableRowByName(productData.name)).toHaveCount(0);
 
     })

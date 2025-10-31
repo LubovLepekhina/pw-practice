@@ -8,6 +8,14 @@ export interface IProduct {
   notes?: string;
 }
 
-export interface IProductInTable extends Pick<IProduct, 'name' | 'price' | 'manufacturer'> {
+export interface ICreatedOn {
   createdOn: string
 }
+
+export interface ID {
+  _id: string
+}
+
+export interface IProductInTable extends Pick<IProduct, 'name' | 'price' | 'manufacturer'>, ICreatedOn {}
+
+export interface IProductFromResponse extends Required<IProduct>, ICreatedOn, ID {}

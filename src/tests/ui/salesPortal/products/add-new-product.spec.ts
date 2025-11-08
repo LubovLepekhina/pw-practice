@@ -82,7 +82,7 @@ test.describe("[Sales Portal] [Products]", async () => {
     await expect(productsListPage.tableRowByName(productData.name)).toBeVisible();
   });
 
-  test("Add new product", async ({ page }) => {
+  test("should create a new product and verify it appears at the top of the products list", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const homePage = new HomePage(page);
     const productsListPage = new ProductsListPage(page);

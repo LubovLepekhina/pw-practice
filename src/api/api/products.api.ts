@@ -1,6 +1,7 @@
-import { IApiClient, IProductResponse, IProductsResponse, IRequestOptions } from "api/apiClients/typesApi";
+import { IApiClient, IGetProductsParams, IProductResponse, IProductsResponse, IProductsSortedResponse, IRequestOptions } from "api/apiClients/typesApi";
 import { apiConfig } from "config/apiConfig";
 import { IProduct } from "data/types/product.types";
+import { convertRequestParams } from "utils/queryParams.utils";
 
 export class ProductsApi {
   constructor(private apiClient: IApiClient) {}
@@ -66,6 +67,20 @@ export class ProductsApi {
     };
 
     return await this.apiClient.send<IProductsResponse>(options);
+  }
+
+  async getSorted(token: string, params?: Partial<IGetProductsParams>) {
+    const options: IRequestOptions = {
+      baseURL: apiConfig.baseUrl!,
+      url: apiConfig.endpoints.products + (params ? convertRequestParams(params) : ""),
+      method: "get",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    return await this.apiClient.send<IProductsSortedResponse>(options);
   }
 
   async delete(_id: string, token: string) {

@@ -1,3 +1,4 @@
+import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 import { ICreatedOn, ID, IProduct } from "data/types/product.types";
 
 export interface IApiClient {
@@ -42,4 +43,29 @@ export interface IProductResponse extends IResponseFields {
 
 export interface IProductsResponse extends IResponseFields {
   Products: IProductFromResponse[];
+}
+
+export type SortOrder = "asc" | "desc";
+
+export interface IProductsSortedResponse extends IProductsResponse {
+  total: number;
+  page: number;
+  limit: number;
+  search: string;
+  manufacturer: string[];
+  sorting: {
+    sortField: ProductsSortField;
+    sortOrder: SortOrder;
+  };
+}
+
+export type ProductsSortField = "createdOn" | "manufacturer" | "price" | "name";
+
+export interface IGetProductsParams {
+  manufacturer: MANUFACTURERS[];
+  search: string;
+  sortField: ProductsSortField;
+  sortOrder: SortOrder;
+  page: number;
+  limit: number;
 }

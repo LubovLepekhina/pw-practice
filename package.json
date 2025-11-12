@@ -13,8 +13,10 @@
   "devDependencies": {
     "@playwright/test": "^1.56.0",
     "@types/ajv": "^0.0.5",
+    "@types/bson": "^4.0.5",
     "@types/dotenv": "^6.1.1",
     "@types/lodash": "^4.17.20",
+    "@types/moment": "^2.11.29",
     "@types/node": "^24.7.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
@@ -22,7 +24,9 @@
   "dependencies": {
     "@faker-js/faker": "^10.1.0",
     "ajv": "^8.17.1",
+    "bson": "^7.0.0",
     "dotenv": "^17.2.3",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "moment": "^2.30.1"
   }
 }

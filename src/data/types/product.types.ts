@@ -18,4 +18,6 @@ export interface ID {
 
 export interface IProductInTable extends Pick<IProduct, 'name' | 'price' | 'manufacturer'>, ICreatedOn {}
 
-export interface IProductFromResponse extends Required<IProduct>, ICreatedOn, ID {}
+export type ProductsTableHeader = "Name" | "Price" | "Manufacturer" | "Created On";
+
+export interface IProductDetails extends Required<IProduct>, ICreatedOn {}

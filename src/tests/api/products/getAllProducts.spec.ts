@@ -14,8 +14,7 @@ import { credentials } from "config/env";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { getAllProductsSchema } from "data/schemas/products/getAllProducts.schema";
 import { STATUS_CODES } from "data/statusCodes";
-import { IProductFromResponse } from "data/types/product.types";
-import { request } from "http";
+import { IProductFromResponse } from "api/apiClients/typesApi";
 import { validateJsonSchema } from "utils/validateSchema.utils";
 
 const { baseUrl, endpoints } = apiConfig;

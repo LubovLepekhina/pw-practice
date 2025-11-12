@@ -69,3 +69,4 @@ export interface IGetProductsParams {
   page: number;
   limit: number;
 }
+

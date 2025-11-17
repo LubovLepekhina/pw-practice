@@ -110,3 +110,14 @@ export interface IMetricsResponse extends IResponseFields {
   Metrics: IMetrics
 }
 
+//for function generateMetricsResponse()
+export interface IOrdersMetricsPartial extends Partial<IOrdersMetrics> {}
+export interface ICustomersMetricsPartial extends Partial<ICustomersMetrics> {}
+export interface IProductsMetricsPartial extends Partial<IProductsMetrics> {}
+
+export interface IMetricsPartial {
+  orders?: IOrdersMetricsPartial;
+  customers?: ICustomersMetricsPartial;
+  products?: IProductsMetricsPartial;
+}
+

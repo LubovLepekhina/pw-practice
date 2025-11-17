@@ -26,8 +26,12 @@ import { convertNumberToFormat } from "utils/convertNumbers.utils";
 test.describe('[Integration] [Sales Portal] [Home] [Metrics]', () => {
     test('Check Orders This Year metric', async ({ loginAsAdmin, homePage, mock}) => {
         const totalOrders = 50;
-        const expectedResponse = generateMetricsResponse({Metrics: {orders: {totalOrders}}});
-        await mock.homePageMetrics(expectedResponse);
+        const expectedResponse = generateMetricsResponse({orders: {totalOrders}});
+        await mock.homePageMetrics({
+            Metrics: expectedResponse,
+            IsSuccess: true,
+            ErrorMessage: null,
+        });
         await loginAsAdmin();
 
         expect(homePage.orderThisYearMetric).toHaveText(totalOrders.toString());
@@ -35,8 +39,12 @@ test.describe('[Integration] [Sales Portal] [Home] [Metrics]', () => {
 
     test('Check New Customers metric', async ({ loginAsAdmin, homePage, mock}) => {
         const newCustomers = 150;
-        const expectedResponse = generateMetricsResponse({Metrics: {customers: {totalNewCustomers: newCustomers}}});
-        await mock.homePageMetrics(expectedResponse);
+        const expectedResponse = generateMetricsResponse({customers: {totalNewCustomers: newCustomers}});
+        await mock.homePageMetrics({
+            Metrics: expectedResponse,
+            IsSuccess: true,
+            ErrorMessage: null,
+        });
         await loginAsAdmin();
 
         expect(homePage.newCustomerMetric).toHaveText(newCustomers.toString());
@@ -44,8 +52,12 @@ test.describe('[Integration] [Sales Portal] [Home] [Metrics]', () => {
 
     test('Check Canceled Orders metric', async ({ loginAsAdmin, homePage, mock}) => {
         const canceledOrders = 17;
-        const expectedResponse = generateMetricsResponse({Metrics: {orders: {totalCanceledOrders: canceledOrders}}});
-        await mock.homePageMetrics(expectedResponse);
+        const expectedResponse = generateMetricsResponse({orders: {totalCanceledOrders: canceledOrders}});
+        await mock.homePageMetrics({
+            Metrics: expectedResponse,
+            IsSuccess: true,
+            ErrorMessage: null,
+        });
         await loginAsAdmin();
 
         expect(homePage.canceledOrdersMetric).toHaveText(canceledOrders.toString());
@@ -53,8 +65,12 @@ test.describe('[Integration] [Sales Portal] [Home] [Metrics]', () => {
 
     test('Check Total Revenue metric', async ({ loginAsAdmin, homePage, mock}) => {
         const totalRevenue = 165000;
-        const expectedResponse = generateMetricsResponse({Metrics: {orders: {totalRevenue: totalRevenue}}});
-        await mock.homePageMetrics(expectedResponse);
+        const expectedResponse = generateMetricsResponse({orders: {totalRevenue: totalRevenue}});
+        await mock.homePageMetrics({
+            Metrics: expectedResponse,
+            IsSuccess: true,
+            ErrorMessage: null,
+        });
         await loginAsAdmin();
         const formattedTotalRevenueMetric = '$' + convertNumberToFormat(totalRevenue, '0.0a');
 
@@ -63,8 +79,12 @@ test.describe('[Integration] [Sales Portal] [Home] [Metrics]', () => {
 
     test('Check Avg Order Value metric', async ({ loginAsAdmin, homePage, mock}) => {
         const avgOrderValue = 180;
-        const expectedResponse = generateMetricsResponse({Metrics: {orders: {averageOrderValue: avgOrderValue}}});
-        await mock.homePageMetrics(expectedResponse);
+        const expectedResponse = generateMetricsResponse({orders: {averageOrderValue: avgOrderValue}});
+        await mock.homePageMetrics({
+            Metrics: expectedResponse,
+            IsSuccess: true,
+            ErrorMessage: null,
+        });
         await loginAsAdmin();
         const formattedAvgOrderValue = '$' + convertNumberToFormat(avgOrderValue, '0.0a');
 

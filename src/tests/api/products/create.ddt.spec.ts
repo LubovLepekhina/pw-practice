@@ -25,7 +25,7 @@ test.describe('[API] [Sales Portal] [Products] Create', () => {
         let id = '';
         let token = '';
 
-        test.beforeEach(async ({ loginApiService }) => {
+        test.beforeAll(async ({ loginApiService }) => {
             token = await loginApiService.loginAsAdmin();
         })
         test.afterEach(async ({ productsApiService }) => {
@@ -52,7 +52,7 @@ test.describe('[API] [Sales Portal] [Products] Create', () => {
     test.describe('Negative', () => {
         let token = '';
 
-        test.beforeEach(async ({ loginApiService }) => {
+        test.beforeAll(async ({ loginApiService }) => {
             token = await loginApiService.loginAsAdmin();
         })
 

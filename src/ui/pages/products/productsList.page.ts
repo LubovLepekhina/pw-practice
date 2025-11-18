@@ -35,6 +35,9 @@ export class ProductsListPage extends SalesPortalPage {
   readonly detailsButton = (productName: string) => this.tableRowByName(productName).getByTitle("Details");
   readonly deleteButton = (productName: string) => this.tableRowByName(productName).getByTitle("Delete");
 
+  readonly searchInput = this.page.locator("#search");
+  readonly searchButton = this.page.locator("#search-products");
+
   readonly uniqueElement = this.addNewProductButton;
   readonly firstRow = this.page.locator('table tbody tr').first();
 
@@ -103,5 +106,13 @@ export class ProductsListPage extends SalesPortalPage {
 
   async clickTableHeader(name: ProductsTableHeader) {
     await this.tableHeaderNamed(name).click();
+  }
+
+  async fillSearchInput(text: string) {
+    await this.searchInput.fill(text);
+  }
+
+  async clickSearch() {
+    await this.searchButton.click();
   }
 }

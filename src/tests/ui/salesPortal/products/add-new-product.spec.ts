@@ -1,4 +1,4 @@
-import test, { expect } from "@playwright/test";
+import { test, expect } from "fixtures/business.fixture";
 import { credentials } from "config/env";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
 import { generateProductData } from "data/salesPortal/products/generateProductData";
@@ -11,6 +11,57 @@ import { AddNewProductPage } from "ui/pages/products/addNewProduct.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
 
 test.describe("[Sales Portal] [Products]", async () => {
+  let id = "";
+  let token = "";
+
+  test("should create a new product and verify it appears at the top of the products list", async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    const homePage = new HomePage(page);
+    const productsListPage = new ProductsListPage(page);
+    const addNewProductPage = new AddNewProductPage(page);
+
+    await loginPage.open();
+    await expect(loginPage.title).toBeVisible();
+    await loginPage.fillCredentials(credentials);
+    await loginPage.clickLoginButton();
+
+    await homePage.waitForOpened();
+    await homePage.clickOnViewModule("Products");
+    await productsListPage.waitForOpened();
+    await productsListPage.clickAddNewProduct();
+    await addNewProductPage.waitForOpened();
+    const productData = generateProductData();
+    await addNewProductPage.fillForm(productData);
+    await addNewProductPage.clickSave();
+    await productsListPage.waitForOpened();
+    await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
+    await expect(productsListPage.tableRowByName(productData.name)).toBeVisible();
+
+    const productFromTable = await productsListPage.getProductData(productData.name);
+    const actualProductData = _.omit(productFromTable, ['createdOn']);
+    const expectedProductData = _.omit(productData, ['amount', 'notes']);
+    expect(actualProductData).toEqual(expectedProductData);
+    await expect(productsListPage.firstRow).toContainText(productData.name);
+  });
+
+  test("Add new product with services", async ({
+    loginUIService,
+    addNewProductUIService,
+    productsListPage,
+  }) => {
+    token = await loginUIService.loginAsAdmin();
+    await addNewProductUIService.open();
+    const createdProduct = await addNewProductUIService.create();
+    id = createdProduct._id;
+    await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
+    await expect(productsListPage.tableRowByName(createdProduct.name)).toBeVisible();
+  });
+
+  test.afterEach(async ({ productsApiService }) => {
+    if (id) await productsApiService.delete(token, id);
+    id = "";
+  });
+
   test.skip("Add new product OLD", async ({ page }) => {
     const homePage = new HomePage(page);
     const productsListPage = new ProductsListPage(page);
@@ -80,35 +131,5 @@ test.describe("[Sales Portal] [Products]", async () => {
 
     await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
     await expect(productsListPage.tableRowByName(productData.name)).toBeVisible();
-  });
-
-  test("should create a new product and verify it appears at the top of the products list", async ({ page }) => {
-    const loginPage = new LoginPage(page);
-    const homePage = new HomePage(page);
-    const productsListPage = new ProductsListPage(page);
-    const addNewProductPage = new AddNewProductPage(page);
-
-    await loginPage.open();
-    await expect(loginPage.title).toBeVisible();
-    await loginPage.fillCredentials(credentials);
-    await loginPage.clickLoginButton();
-
-    await homePage.waitForOpened();
-    await homePage.clickOnViewModule("Products");
-    await productsListPage.waitForOpened();
-    await productsListPage.clickAddNewProduct();
-    await addNewProductPage.waitForOpened();
-    const productData = generateProductData();
-    await addNewProductPage.fillForm(productData);
-    await addNewProductPage.clickSave();
-    await productsListPage.waitForOpened();
-    await expect(productsListPage.toastMessage).toContainText(NOTIFICATIONS.PRODUCT_CREATED);
-    await expect(productsListPage.tableRowByName(productData.name)).toBeVisible();
-
-    const productFromTable = await productsListPage.getProductData(productData.name);
-    const actualProductData = _.omit(productFromTable, ['createdOn']);
-    const expectedProductData = _.omit(productData, ['amount', 'notes']);
-    expect(actualProductData).toEqual(expectedProductData);
-    await expect(productsListPage.firstRow).toContainText(productData.name);
   });
 });

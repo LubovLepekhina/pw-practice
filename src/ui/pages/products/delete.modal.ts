@@ -1,6 +1,6 @@
-import { SalesPortalPage } from "../salesPortal.page";
+import { BaseModal } from "../base.modal";
 
-export class DeleteModal extends SalesPortalPage {
+export class DeleteModal extends BaseModal {
     readonly uniqueElement = this.page.locator("div[name='confirmation-modal']");
 
     readonly title = this.uniqueElement.locator('h5');

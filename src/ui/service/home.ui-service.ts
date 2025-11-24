@@ -7,7 +7,7 @@ export class HomeUIService {
   homePage: HomePage;
   productsListPage: ProductsListPage;
   customersListPage: CustomersListPage;
-  
+
   constructor(private page: Page) {
     this.homePage = new HomePage(page);
     this.productsListPage = new ProductsListPage(page);

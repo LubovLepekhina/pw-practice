@@ -8,26 +8,26 @@ import { AddNewCustomerPage } from "ui/pages/customers/addNewCustomer.page";
 import { CustomersListPage } from "ui/pages/customers/customersList.page";
 
 export class AddNewCustomertUIService {
-    customerListPage: CustomersListPage;
-    addNewCustomerPage: AddNewCustomerPage;
+  customerListPage: CustomersListPage;
+  addNewCustomerPage: AddNewCustomerPage;
 
-    constructor(private page: Page) {
-        this.customerListPage = new CustomersListPage(page);
-        this.addNewCustomerPage = new AddNewCustomerPage(page);
-    }
+  constructor(private page: Page) {
+    this.customerListPage = new CustomersListPage(page);
+    this.addNewCustomerPage = new AddNewCustomerPage(page);
+  }
 
-    async create(customerData?: Partial<ICustomer>) {
-        const data = generateCustomerData(customerData);
-        await this.addNewCustomerPage.fillForm(data);
+  async create(customerData?: Partial<ICustomer>) {
+    const data = generateCustomerData(customerData);
+    await this.addNewCustomerPage.fillForm(data);
 
-        const response = await this.addNewCustomerPage.interceptResponse<ICustomerResponse, any>(
-            apiConfig.endpoints.customers,
-            this.addNewCustomerPage.clickSaveNewCustomer.bind(this.addNewCustomerPage)
-        )
-        expect(response.status).toBe(STATUS_CODES.CREATED);
-        expect(_.omit(response.body.Customer, '_id', 'createdOn')).toEqual(data);
+    const response = await this.addNewCustomerPage.interceptResponse<ICustomerResponse, any>(
+      apiConfig.endpoints.customers,
+      this.addNewCustomerPage.clickSaveNewCustomer.bind(this.addNewCustomerPage),
+    );
+    expect(response.status).toBe(STATUS_CODES.CREATED);
+    expect(_.omit(response.body.Customer, "_id", "createdOn")).toEqual(data);
 
-        await this.customerListPage.waitForOpened();
-        return response.body.Customer;
-    }
+    await this.customerListPage.waitForOpened();
+    return response.body.Customer;
+  }
 }

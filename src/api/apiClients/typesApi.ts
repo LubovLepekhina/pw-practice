@@ -75,8 +75,8 @@ export interface IOrdersMetrics {
   totalOrders: number;
   averageOrderValue: number;
   totalCanceledOrders: number;
-  recentOrders: any[]; 
-  ordersCountPerDay: any[]; 
+  recentOrders: any[];
+  ordersCountPerDay: any[];
 }
 
 export interface IDateItem {
@@ -92,12 +92,12 @@ export interface ICustomerGrowthItem {
 
 export interface ICustomersMetrics {
   totalNewCustomers: number;
-  topCustomers: any[]; 
+  topCustomers: any[];
   customerGrowth: ICustomerGrowthItem[];
 }
 
 export interface IProductsMetrics {
-  topProducts: any[]; 
+  topProducts: any[];
 }
 
 export interface IMetrics {
@@ -107,7 +107,7 @@ export interface IMetrics {
 }
 
 export interface IMetricsResponse extends IResponseFields {
-  Metrics: IMetrics
+  Metrics: IMetrics;
 }
 
 //for function generateMetricsResponse()
@@ -116,4 +116,3 @@ export interface IMetricsPartial {
   customers?: Partial<ICustomersMetrics>;
   products?: Partial<IProductsMetrics>;
 }
-

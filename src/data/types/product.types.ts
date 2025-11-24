@@ -9,14 +9,14 @@ export interface IProduct {
 }
 
 export interface ICreatedOn {
-  createdOn: string
+  createdOn: string;
 }
 
 export interface ID {
-  _id: string
+  _id: string;
 }
 
-export interface IProductInTable extends Pick<IProduct, 'name' | 'price' | 'manufacturer'>, ICreatedOn {}
+export interface IProductInTable extends Pick<IProduct, "name" | "price" | "manufacturer">, ICreatedOn {}
 
 export type ProductsTableHeader = "Name" | "Price" | "Manufacturer" | "Created On";
 

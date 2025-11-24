@@ -9,34 +9,34 @@
 
 import test, { expect } from "@playwright/test";
 
-test.describe('[demo-login-form]', () => {
-    interface IUser {
-        name: string,
-        password: string
-    }
+test.describe("[demo-login-form]", () => {
+  interface IUser {
+    name: string;
+    password: string;
+  }
 
-    test.beforeEach(async ({page}) => {
-        await page.goto('https://anatoly-karpovich.github.io/demo-login-form/');
-    })
+  test.beforeEach(async ({ page }) => {
+    await page.goto("https://anatoly-karpovich.github.io/demo-login-form/");
+  });
 
-    test('Login with data from localStorage', async ({page}) => {
-        const user: IUser = {
-            name: 'test@gmail.com',
-            password: 'SecretPw123!@#'
-        }
+  test("Login with data from localStorage", async ({ page }) => {
+    const user: IUser = {
+      name: "test@gmail.com",
+      password: "SecretPw123!@#",
+    };
 
-        const userNameInput = page.locator('#userName');
-        const passwordInput = page.locator('#password');
-        const submitButton = page.locator('#submit');
-        const notificationSuccessLogin = page.locator('#successMessage');
+    const userNameInput = page.locator("#userName");
+    const passwordInput = page.locator("#password");
+    const submitButton = page.locator("#submit");
+    const notificationSuccessLogin = page.locator("#successMessage");
 
-        await page.evaluate(user => {
-            localStorage.setItem(user.name, JSON.stringify(user));
-        }, user)
-        await userNameInput.fill(user.name);
-        await passwordInput.fill(user.password);
-        await submitButton.click();
+    await page.evaluate((user) => {
+      localStorage.setItem(user.name, JSON.stringify(user));
+    }, user);
+    await userNameInput.fill(user.name);
+    await passwordInput.fill(user.password);
+    await submitButton.click();
 
-        await expect(notificationSuccessLogin).toHaveText(`Hello, ${user.name}!`);
-    })
-})
+    await expect(notificationSuccessLogin).toHaveText(`Hello, ${user.name}!`);
+  });
+});

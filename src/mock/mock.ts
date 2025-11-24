@@ -28,11 +28,11 @@ export class Mock {
 
   async homePageMetrics(body: IMetricsResponse, statusCode: STATUS_CODES = STATUS_CODES.OK) {
     await this.page.route(apiConfig.baseUrl + apiConfig.endpoints.metrics, async (route) => {
-        await route.fulfill({
-            status: statusCode,
-            contentType: "application/json",
-            body: JSON.stringify(body)
-        });
+      await route.fulfill({
+        status: statusCode,
+        contentType: "application/json",
+        body: JSON.stringify(body),
+      });
     });
   }
 }

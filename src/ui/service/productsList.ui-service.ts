@@ -63,11 +63,11 @@ export class ProductsListUIService {
   }
 
   assertTableProductDataToGenerated(actual: IProductInTable, expected: IProduct) {
-    expect(_.omit(actual, ['createdOn'])).toEqual(_.omit(expected, ['amount', 'notes']));
+    expect(_.omit(actual, ["createdOn"])).toEqual(_.omit(expected, ["amount", "notes"]));
   }
 
   assertDetailsDataToGenerated(actual: IProductDetails, expected: IProduct) {
-    expect(_.omit(actual, ['createdOn'])).toEqual(expected);
+    expect(_.omit(actual, ["createdOn"])).toEqual(expected);
   }
 
   async assertProductInTable(productName: string, { visible }: { visible: boolean }) {

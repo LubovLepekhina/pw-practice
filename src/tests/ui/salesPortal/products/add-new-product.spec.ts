@@ -38,17 +38,13 @@ test.describe("[Sales Portal] [Products]", async () => {
     await expect(productsListPage.tableRowByName(productData.name)).toBeVisible();
 
     const productFromTable = await productsListPage.getProductData(productData.name);
-    const actualProductData = _.omit(productFromTable, ['createdOn']);
-    const expectedProductData = _.omit(productData, ['amount', 'notes']);
+    const actualProductData = _.omit(productFromTable, ["createdOn"]);
+    const expectedProductData = _.omit(productData, ["amount", "notes"]);
     expect(actualProductData).toEqual(expectedProductData);
     await expect(productsListPage.firstRow).toContainText(productData.name);
   });
 
-  test("Add new product with services", async ({
-    loginUIService,
-    addNewProductUIService,
-    productsListPage,
-  }) => {
+  test("Add new product with services", async ({ loginUIService, addNewProductUIService, productsListPage }) => {
     token = await loginUIService.loginAsAdmin();
     await addNewProductUIService.open();
     const createdProduct = await addNewProductUIService.create();

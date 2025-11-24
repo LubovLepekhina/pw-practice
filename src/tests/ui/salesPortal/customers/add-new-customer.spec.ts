@@ -20,13 +20,16 @@ test.describe('[Sales Portal] [Customers]', async () => {
     let id = '';
     let token = '';
 
-    test.beforeEach(async ({ customersApiService}) => {
+    test.beforeAll(async ({ loginUIService }) => {
+        token = await loginUIService.loginAsAdmin(); //залогин через ui, перешли на стр home
+    })
+
+    test.afterEach(async ({ customersApiService}) => {
         if (id) await customersApiService.delete(id, token);
         id = '';
     })
 
-    test('Add new customer with services', async ({ loginUIService, homeUIService, customersListUIService, addNewCustomerUIService,customersListPage }) => {
-        token = await loginUIService.loginAsAdmin(); //залогин через ui, перешли на стр home
+    test('Add new customer with services', async ({ homeUIService, customersListUIService, addNewCustomerUIService,customersListPage }) => {
         await homeUIService.openModule('Customers'); //нажали кнопку View Customers, дождались, пока откроется стр Customers
         await customersListUIService.openAddNewCustomerPage(); //нажали кнопку AddNewCustomer, дождались, пока откроется стр AddNewCustomer
         

@@ -83,10 +83,10 @@ export class ProductsApi {
     return await this.apiClient.send<IProductsSortedResponse>(options);
   }
 
-  async delete(_id: string, token: string) {
+  async delete(id: string, token: string) {
     const options: IRequestOptions = {
       baseURL: apiConfig.baseUrl!,
-      url: apiConfig.endpoints.productById(_id),
+      url: apiConfig.endpoints.productById(id),
       method: "delete",
       headers: {
         "content-type": "application/json",

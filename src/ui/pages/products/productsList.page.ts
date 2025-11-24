@@ -39,7 +39,7 @@ export class ProductsListPage extends SalesPortalPage {
   readonly searchButton = this.page.locator("#search-products");
 
   readonly uniqueElement = this.addNewProductButton;
-  readonly firstRow = this.page.locator('table tbody tr').first();
+  readonly firstRow = this.page.locator("table tbody tr").first();
 
   async clickAddNewProduct() {
     await this.addNewProductButton.click();

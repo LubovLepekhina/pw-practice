@@ -11,25 +11,25 @@
 //   Password: обязательное
 
 import test, { expect } from "@playwright/test";
-import { invaliTestData } from 'data/hw-21/register-data';
+import { invaliTestData } from "data/hw-21/register-data";
 
-test.describe('[demo-login-form] Registration', () => {
-    const url = 'https://anatoly-karpovich.github.io/demo-login-form/';
+test.describe("[demo-login-form] Registration", () => {
+  const url = "https://anatoly-karpovich.github.io/demo-login-form/";
 
-    for (const {title, credentials, errorMessage} of invaliTestData) {
-        test(title, async ({page}) => {
-            await page.goto(url);
-            const registerButton = page.locator('#registerOnLogin');
-            await expect(registerButton).toBeVisible();
-            await registerButton.click();
-            const registerFormTitle = page.locator('#registerForm');
-            await expect(registerFormTitle).toBeVisible();
-            await page.locator('#userNameOnRegister').fill(credentials.username);
-            await page.locator('#passwordOnRegister').fill(credentials.password);
-            await page.locator('#register').click();
-            const errorMessageLocator = page.locator('#errorMessageOnRegister');
+  for (const { title, credentials, errorMessage } of invaliTestData) {
+    test(title, async ({ page }) => {
+      await page.goto(url);
+      const registerButton = page.locator("#registerOnLogin");
+      await expect(registerButton).toBeVisible();
+      await registerButton.click();
+      const registerFormTitle = page.locator("#registerForm");
+      await expect(registerFormTitle).toBeVisible();
+      await page.locator("#userNameOnRegister").fill(credentials.username);
+      await page.locator("#passwordOnRegister").fill(credentials.password);
+      await page.locator("#register").click();
+      const errorMessageLocator = page.locator("#errorMessageOnRegister");
 
-            await expect(errorMessageLocator).toHaveText(errorMessage!);
-        })
-    }
-})
+      await expect(errorMessageLocator).toHaveText(errorMessage!);
+    });
+  }
+});

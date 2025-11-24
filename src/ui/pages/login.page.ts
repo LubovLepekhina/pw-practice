@@ -9,19 +9,18 @@ import { ICredentials } from "data/types/credentials.types";
 import { SalesPortalPage } from "./salesPortal.page";
 
 export class LoginPage extends SalesPortalPage {
-    readonly emailInput = this.page.locator('#emailinput');
-    readonly passwordInput = this.page.locator('#passwordinput');
-    readonly loginButton = this.page.getByRole('button', { name: 'Login' });
-    readonly title = this.page.locator('p.lead');
-    readonly uniqueElement = this.title;
+  readonly emailInput = this.page.locator("#emailinput");
+  readonly passwordInput = this.page.locator("#passwordinput");
+  readonly loginButton = this.page.getByRole("button", { name: "Login" });
+  readonly title = this.page.locator("p.lead");
+  readonly uniqueElement = this.title;
 
-    async fillCredentials(credentials: Partial<ICredentials>) {
-        if (credentials.username) await this.emailInput.fill(credentials.username);
-        if (credentials.password) await this.passwordInput.fill(credentials.password);
-    }
+  async fillCredentials(credentials: Partial<ICredentials>) {
+    if (credentials.username) await this.emailInput.fill(credentials.username);
+    if (credentials.password) await this.passwordInput.fill(credentials.password);
+  }
 
-    async clickLoginButton() {
-        await this.loginButton.click();
-    }
-
+  async clickLoginButton() {
+    await this.loginButton.click();
+  }
 }

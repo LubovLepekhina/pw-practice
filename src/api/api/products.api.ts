@@ -1,4 +1,11 @@
-import { IApiClient, IGetProductsParams, IProductResponse, IProductsResponse, IProductsSortedResponse, IRequestOptions } from "api/apiClients/typesApi";
+import {
+  IApiClient,
+  IGetProductsParams,
+  IProductResponse,
+  IProductsResponse,
+  IProductsSortedResponse,
+  IRequestOptions,
+} from "api/apiClients/typesApi";
 import { apiConfig } from "config/apiConfig";
 import { IProduct } from "data/types/product.types";
 import { convertRequestParams } from "utils/queryParams.utils";
@@ -15,7 +22,7 @@ export class ProductsApi {
   async create(product: IProduct, token: string) {
     const options: IRequestOptions = {
       baseURL: apiConfig.baseUrl!,
-      url: apiConfig.endpoints.products, 
+      url: apiConfig.endpoints.products,
       method: "post",
       headers: {
         "content-type": "application/json",
@@ -83,10 +90,10 @@ export class ProductsApi {
     return await this.apiClient.send<IProductsSortedResponse>(options);
   }
 
-  async delete(_id: string, token: string) {
+  async delete(id: string, token: string) {
     const options: IRequestOptions = {
       baseURL: apiConfig.baseUrl!,
-      url: apiConfig.endpoints.productById(_id),
+      url: apiConfig.endpoints.productById(id),
       method: "delete",
       headers: {
         "content-type": "application/json",

@@ -12,63 +12,61 @@ import test, { expect } from "@playwright/test";
  */
 
 interface ICredentials {
-    username: string,
-    password: string
+  username: string;
+  password: string;
 }
 
 enum NOTIFICATIONS {
-    REGISTER_SUCCESS = 'Successfully registered! Please, click Back to return on login page',
-    USERNAME_IS_REQUIRED = 'Username is required',
-    PASSWORD_IS_REQUIRED = 'Password is required'
+  REGISTER_SUCCESS = "Successfully registered! Please, click Back to return on login page",
+  USERNAME_IS_REQUIRED = "Username is required",
+  PASSWORD_IS_REQUIRED = "Password is required",
 }
 
-test.describe('[demo-login-form]', () => {
+test.describe("[demo-login-form]", () => {
+  const validCredentials: ICredentials = {
+    username: "Lucy",
+    password: "Password123",
+  };
 
-    const validCredentials: ICredentials = {
-        'username': 'Lucy',
-        'password': 'Password123'
-    };
+  test.beforeEach(async ({ page }) => {
+    const url = "https://anatoly-karpovich.github.io/demo-login-form/";
+    const registerButton = page.locator("#registerOnLogin");
 
-    test.beforeEach(async ({page}) => {
-        const url = 'https://anatoly-karpovich.github.io/demo-login-form/';
-        const registerButton = page.locator('#registerOnLogin');
+    await page.goto(url);
+    await registerButton.click();
+  });
+  test("should register successfully with valid username and password", async ({ page }) => {
+    const userNameInputRegister = page.locator("#userNameOnRegister");
+    const passwordInputRegister = page.locator("#passwordOnRegister");
+    const registerSubmitButton = page.locator("#register");
+    const notification = page.locator("#errorMessageOnRegister");
 
-        await page.goto(url);
-        await registerButton.click();
-    })
-    test('should register successfully with valid username and password', async ({page}) => {
+    await userNameInputRegister.fill(validCredentials.username);
+    await passwordInputRegister.fill(validCredentials.password);
+    await registerSubmitButton.click();
 
-        const userNameInputRegister = page.locator('#userNameOnRegister');
-        const passwordInputRegister = page.locator('#passwordOnRegister');
-        const registerSubmitButton = page.locator('#register');
-        const notification = page.locator('#errorMessageOnRegister');
+    await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_SUCCESS);
+  });
 
-        await userNameInputRegister.fill(validCredentials.username);
-        await passwordInputRegister.fill(validCredentials.password);
-        await registerSubmitButton.click();
+  test("should not register with empty username", async ({ page }) => {
+    const passwordInputRegister = page.locator("#passwordOnRegister");
+    const registerSubmitButton = page.locator("#register");
+    const notification = page.locator("#errorMessageOnRegister");
 
-        await expect(notification).toHaveText(NOTIFICATIONS.REGISTER_SUCCESS);
-    })
+    await passwordInputRegister.fill(validCredentials.password);
+    await registerSubmitButton.click();
 
-    test('should not register with empty username', async ({page}) => {
-        const passwordInputRegister = page.locator('#passwordOnRegister');
-        const registerSubmitButton = page.locator('#register');        
-        const notification = page.locator('#errorMessageOnRegister');
+    await expect(notification).toHaveText(NOTIFICATIONS.USERNAME_IS_REQUIRED);
+  });
 
-        await passwordInputRegister.fill(validCredentials.password);
-        await registerSubmitButton.click();
+  test("should not register with empty password", async ({ page }) => {
+    const userNameInputRegister = page.locator("#userNameOnRegister");
+    const registerSubmitButton = page.locator("#register");
+    const notification = page.locator("#errorMessageOnRegister");
 
-        await expect(notification).toHaveText(NOTIFICATIONS.USERNAME_IS_REQUIRED);
-    })
+    await userNameInputRegister.fill(validCredentials.username);
+    await registerSubmitButton.click();
 
-    test('should not register with empty password', async ({page}) => {
-        const userNameInputRegister = page.locator('#userNameOnRegister');
-        const registerSubmitButton = page.locator('#register');
-        const notification = page.locator('#errorMessageOnRegister');
-
-        await userNameInputRegister.fill(validCredentials.username);
-        await registerSubmitButton.click();
-
-        await expect(notification).toHaveText(NOTIFICATIONS.PASSWORD_IS_REQUIRED);
-    })
-})
+    await expect(notification).toHaveText(NOTIFICATIONS.PASSWORD_IS_REQUIRED);
+  });
+});

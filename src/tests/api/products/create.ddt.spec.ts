@@ -2,6 +2,7 @@ import { createProductInvalidData, createProductValidData } from "data/salesPort
 import { generateProductData } from "data/salesPortal/products/generateProductData";
 import { createProductSchema } from "data/schemas/products/create.schema";
 import { STATUS_CODES } from "data/statusCodes";
+import { TAGS } from "data/tags";
 import { test } from "fixtures/api.fixture";
 import { validateResponse } from "utils/validation/validateResponse.utils";
 
@@ -34,7 +35,7 @@ test.describe("[API] [Sales Portal] [Products] Create", () => {
     });
 
     for (const { title, checkingValue } of createProductValidData) {
-      test(title, async ({ productsApi }) => {
+      test(title, { tag: [TAGS.API, TAGS.REGRESSION] }, async ({ productsApi }) => {
         const productData = generateProductData(checkingValue);
         const createdProduct = await productsApi.create(productData, token);
         validateResponse(createdProduct, {
@@ -56,7 +57,7 @@ test.describe("[API] [Sales Portal] [Products] Create", () => {
     });
 
     for (const { title, checkingValue } of createProductInvalidData) {
-      test(title, async ({ productsApi }) => {
+      test(title, { tag: [TAGS.API, TAGS.REGRESSION] }, async ({ productsApi }) => {
         const productData = generateProductData(checkingValue);
         const createdProduct = await productsApi.create(productData, token);
         validateResponse(createdProduct, {

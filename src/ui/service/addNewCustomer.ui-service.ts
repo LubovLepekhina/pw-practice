@@ -6,6 +6,7 @@ import { ICustomer, ICustomerResponse } from "data/types/customer.types";
 import _ from "lodash";
 import { AddNewCustomerPage } from "ui/pages/customers/addNewCustomer.page";
 import { CustomersListPage } from "ui/pages/customers/customersList.page";
+import { logStep } from "utils/report/logStep.utils";
 
 export class AddNewCustomertUIService {
   customerListPage: CustomersListPage;
@@ -16,6 +17,7 @@ export class AddNewCustomertUIService {
     this.addNewCustomerPage = new AddNewCustomerPage(page);
   }
 
+  @logStep("Create customer via UI")
   async create(customerData?: Partial<ICustomer>) {
     const data = generateCustomerData(customerData);
     await this.addNewCustomerPage.fillForm(data);

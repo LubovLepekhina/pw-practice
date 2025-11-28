@@ -16,6 +16,7 @@ import { getAllProductsSchema } from "data/schemas/products/getAllProducts.schem
 import { STATUS_CODES } from "data/statusCodes";
 import { IProductFromResponse } from "api/apiClients/typesApi";
 import { validateJsonSchema } from "utils/validateSchema.utils";
+import { TAGS } from "data/tags";
 
 const { baseUrl, endpoints } = apiConfig;
 
@@ -46,7 +47,7 @@ test.describe("[API] [Sales Portal] [Products]", () => {
     expect(deleteResponse.status()).toBe(STATUS_CODES.DELETED);
   });
 
-  test("Get all products", async ({ request }) => {
+  test("Get all products", { tag: [TAGS.API, TAGS.REGRESSION] }, async ({ request }) => {
     //create product
     const product = generateProductData();
     const createResponse = await request.post(`${baseUrl}${endpoints.products}`, {

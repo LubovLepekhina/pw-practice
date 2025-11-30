@@ -11,6 +11,7 @@
 //   За собой удаляем продукт через апи, разумеется:)
 
 import { generateProductData } from "data/salesPortal/products/generateProductData";
+import { TAGS } from "data/tags";
 import { test } from "fixtures";
 
 test.describe("[Sales Portal] [Products] E2E Update", async () => {
@@ -22,31 +23,29 @@ test.describe("[Sales Portal] [Products] E2E Update", async () => {
     id = "";
   });
 
-  test("Update product with services", async ({
-    loginUIService,
-    productsApiService,
-    productsListUIService,
-    editProductPage,
-    productsListPage,
-  }) => {
-    token = await loginUIService.loginAsAdmin();
-    const createdProduct = await productsApiService.create(token);
-    id = createdProduct._id;
+  test(
+    "Update product with services",
+    { tag: [TAGS.UI, TAGS.REGRESSION] },
+    async ({ productsApiService, productsListUIService, editProductPage, productsListPage }) => {
+      token = await productsListPage.getAuthToken();
+      const createdProduct = await productsApiService.create(token);
+      id = createdProduct._id;
 
-    await productsListUIService.open();
-    await productsListUIService.openEditModal(createdProduct.name);
+      await productsListUIService.open();
+      await productsListUIService.openEditModal(createdProduct.name);
 
-    const updatedProduct = generateProductData({ name: createdProduct.name + "changed" });
-    await editProductPage.fillForm(updatedProduct);
-    await editProductPage.clickSaveChanges();
-    await productsListPage.waitForOpened();
+      const updatedProduct = generateProductData({ name: createdProduct.name + "changed" });
+      await editProductPage.fillForm(updatedProduct);
+      await editProductPage.clickSaveChanges();
+      await productsListPage.waitForOpened();
 
-    productsListUIService.assertProductInTable(updatedProduct.name, { visible: true });
-    const actualProductData = await productsListPage.getProductData(updatedProduct.name);
-    productsListUIService.assertTableProductDataToGenerated(actualProductData, updatedProduct);
+      productsListUIService.assertProductInTable(updatedProduct.name, { visible: true });
+      const actualProductData = await productsListPage.getProductData(updatedProduct.name);
+      productsListUIService.assertTableProductDataToGenerated(actualProductData, updatedProduct);
 
-    await productsListUIService.openDetailsModal(updatedProduct.name);
-    const productInModal = await productsListPage.detailsModal.getData();
-    productsListUIService.assertDetailsDataToGenerated(productInModal, updatedProduct);
-  });
+      await productsListUIService.openDetailsModal(updatedProduct.name);
+      const productInModal = await productsListPage.detailsModal.getData();
+      productsListUIService.assertDetailsDataToGenerated(productInModal, updatedProduct);
+    },
+  );
 });

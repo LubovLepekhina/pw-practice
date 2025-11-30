@@ -6,6 +6,7 @@ import { IProduct } from "data/types/product.types";
 import { IProductResponse } from "api/apiClients/typesApi";
 import _ from "lodash";
 import { AddNewProductPage, ProductsListPage } from "ui/pages/products";
+import { logStep } from "utils/report/logStep.utils";
 
 export class AddNewProductUIService {
   addNewProductPage: AddNewProductPage;
@@ -16,11 +17,13 @@ export class AddNewProductUIService {
     this.productsListPage = new ProductsListPage(page);
   }
 
+  @logStep("Open Add Product Page")
   async open() {
     await this.addNewProductPage.open("products/add");
     await this.addNewProductPage.waitForOpened();
   }
 
+  @logStep("Create product via UI")
   async create(productData?: Partial<IProduct>) {
     const data = generateProductData(productData);
     await this.addNewProductPage.fillForm(data);

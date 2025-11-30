@@ -13,6 +13,7 @@
 
 import { generateCustomerData } from "data/salesPortal/customers/generateCustomerData";
 import { NOTIFICATIONS } from "data/salesPortal/notifications";
+import { TAGS } from "data/tags";
 import { expect, test } from "fixtures";
 
 test.describe("[Sales Portal] [Customers]", async () => {
@@ -24,25 +25,23 @@ test.describe("[Sales Portal] [Customers]", async () => {
     id = "";
   });
 
-  test("Add new customer with services", async ({
-    loginUIService,
-    homeUIService,
-    customersListUIService,
-    addNewCustomerUIService,
-    customersListPage,
-  }) => {
-    token = await loginUIService.loginAsAdmin(); //залогин через ui, перешли на стр home
-    await homeUIService.openModule("Customers"); //нажали кнопку View Customers, дождались, пока откроется стр Customers
-    await customersListUIService.openAddNewCustomerPage(); //нажали кнопку AddNewCustomer, дождались, пока откроется стр AddNewCustomer
+  test(
+    "Add new customer with services",
+    { tag: [TAGS.UI, TAGS.SMOKE, TAGS.REGRESSION] },
+    async ({ customersListUIService, addNewCustomerUIService, customersListPage }) => {
+      await customersListUIService.open(); //сразу переходим на стр customers
+      await customersListUIService.openAddNewCustomerPage(); //нажали кнопку AddNewCustomer, дождались, пока откроется стр AddNewCustomer
 
-    const newCustomer = generateCustomerData(); //сгенер кастомера
-    const createdCustomer = await addNewCustomerUIService.create(newCustomer); //создали кастомера и проверили, что ответ с апи совпадает со сгенеренным кастомером, дождались пока откроется стр Customer List
-    id = createdCustomer._id;
+      const newCustomer = generateCustomerData(); //сгенер кастомера
+      const createdCustomer = await addNewCustomerUIService.create(newCustomer); //создали кастомера и проверили, что ответ с апи совпадает со сгенеренным кастомером, дождались пока откроется стр Customer List
+      id = createdCustomer._id;
+      token = await customersListPage.getAuthToken(); //достаем токен из куки контекста браузера
 
-    expect(customersListPage.toastMessage).toHaveText(NOTIFICATIONS.CUSTOMER_CREATED);
-    customersListUIService.assertCustomerInTable(newCustomer.email, { visible: true }); //проверили, что кастомер есть в таблице
+      expect(customersListPage.toastMessage).toHaveText(NOTIFICATIONS.CUSTOMER_CREATED);
+      customersListUIService.assertCustomerInTable(newCustomer.email, { visible: true }); //проверили, что кастомер есть в таблице
 
-    const data = await customersListPage.getRowData(newCustomer.email); //получили все данные из строки
-    customersListUIService.assertCustomerInTableToGenerated(data, createdCustomer); //сравнили данные из таблицы со сгенеренными
-  });
+      const data = await customersListPage.getRowData(newCustomer.email); //получили все данные из строки
+      customersListUIService.assertCustomerInTableToGenerated(data, createdCustomer); //сравнили данные из таблицы со сгенеренными
+    },
+  );
 });

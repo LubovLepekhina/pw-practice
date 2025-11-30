@@ -4,6 +4,7 @@ import { credentials } from "config/env";
 import { STATUS_CODES } from "data/statusCodes";
 import { validateJsonSchema } from "utils/validateSchema.utils";
 import { loginSchema } from "data/schemas/auth/login.schema";
+import { TAGS } from "data/tags";
 
 // Написать смоук API тест на логин
 //   - создать и проверить схему
@@ -13,7 +14,7 @@ import { loginSchema } from "data/schemas/auth/login.schema";
 const { baseUrl, endpoints } = apiConfig;
 
 test.describe("[API] [Sales Portal]", () => {
-  test("Login with valid credentials", async ({ request }) => {
+  test("Login with valid credentials", { tag: [TAGS.API, TAGS.SMOKE, TAGS.REGRESSION] }, async ({ request }) => {
     const response = await request.post(`${baseUrl}${endpoints.login}`, {
       headers: {
         "content-type": "application/json",

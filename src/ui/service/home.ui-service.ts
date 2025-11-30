@@ -2,6 +2,7 @@ import { Page } from "@playwright/test";
 import { CustomersListPage } from "ui/pages/customers/customersList.page";
 import { HomeModuleButton, HomePage } from "ui/pages/home.page";
 import { ProductsListPage } from "ui/pages/products/productsList.page";
+import { logStep } from "utils/report/logStep.utils";
 
 export class HomeUIService {
   homePage: HomePage;
@@ -14,6 +15,13 @@ export class HomeUIService {
     this.customersListPage = new CustomersListPage(page);
   }
 
+  @logStep("Open Home Page")
+  async open() {
+    await this.homePage.open("home");
+    await this.homePage.waitForOpened();
+  }
+
+  @logStep("Open Modul on Home Page")
   async openModule(moduleName: HomeModuleButton) {
     await this.homePage.clickOnViewModule(moduleName);
 

@@ -7,6 +7,7 @@
 
 import { ICredentials } from "data/types/credentials.types";
 import { SalesPortalPage } from "./salesPortal.page";
+import { logStep } from "utils/report/logStep.utils";
 
 export class LoginPage extends SalesPortalPage {
   readonly emailInput = this.page.locator("#emailinput");
@@ -15,11 +16,13 @@ export class LoginPage extends SalesPortalPage {
   readonly title = this.page.locator("p.lead");
   readonly uniqueElement = this.title;
 
+  @logStep("Fill Login Form")
   async fillCredentials(credentials: Partial<ICredentials>) {
     if (credentials.username) await this.emailInput.fill(credentials.username);
     if (credentials.password) await this.passwordInput.fill(credentials.password);
   }
 
+  @logStep("Click Login Button")
   async clickLoginButton() {
     await this.loginButton.click();
   }

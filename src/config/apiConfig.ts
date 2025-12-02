@@ -10,5 +10,6 @@ export const apiConfig = {
     metrics: "/api/metrics",
     customers: "/api/customers",
     customerById: (id: string) => `/api/customers/${id}`,
+    customersAll: "/api/customers/all",
   },
 };

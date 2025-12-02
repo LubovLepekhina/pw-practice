@@ -21,3 +21,27 @@ export interface ICustomerResponse extends IResponseFields {
 }
 
 export interface ICustomerInTable extends Pick<ICustomer, "email" | "name" | "country">, ICreatedOn {}
+
+export type SortOrder = "asc" | "desc";
+export interface ICustomersSortedResponse extends ICustomerResponse {
+  total: number;
+  page: number;
+  limit: number;
+  search: string;
+  country: string[];
+  sorting: {
+    sortField: CustomersSortField;
+    sortOrder: SortOrder;
+  };
+}
+
+export type CustomersSortField = "email" | "name" | "country" | "createdOn";
+
+export interface IGetCustomersParams {
+  search: string;
+  country: COUNTRIES[];
+  sortField: CustomersSortField;
+  sortOrder: SortOrder;
+  page: number;
+  limit: number;
+}

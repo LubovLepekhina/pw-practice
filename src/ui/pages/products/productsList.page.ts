@@ -1,6 +1,6 @@
 import { IProductInTable, ProductsTableHeader } from "data/types/product.types";
 import { SalesPortalPage } from "../salesPortal.page";
-import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
+import { MANUFACTURERS } from "data/products/manufacturers";
 import { ProductDetailsModal } from "./details.modal";
 import { DeleteModal } from "./delete.modal";
 import { logStep } from "utils/report/logStep.utils";

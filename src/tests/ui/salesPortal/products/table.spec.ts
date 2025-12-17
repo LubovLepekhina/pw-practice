@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { NOTIFICATIONS } from "data/salesPortal/notifications";
+import { NOTIFICATIONS } from "data/notifications";
 import { TAGS } from "data/tags";
 
 test.describe("[Sales Portal] [Products]", () => {

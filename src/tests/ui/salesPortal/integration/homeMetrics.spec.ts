@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures/business.fixture";
-import { generateMetricsResponse } from "data/salesPortal/generateMetricsResponse";
+import { generateMetricsResponse } from "data/generateMetricsResponse";
 import { convertNumberToFormat } from "utils/convertNumbers.utils";
 import { TAGS } from "data/tags";
 

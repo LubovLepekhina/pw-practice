@@ -1,7 +1,7 @@
 import { test, expect } from "fixtures";
 import { credentials } from "config/env";
-import { NOTIFICATIONS } from "data/salesPortal/notifications";
-import { generateProductData } from "data/salesPortal/products/generateProductData";
+import { NOTIFICATIONS } from "data/notifications";
+import { generateProductData } from "data/products/generateProductData";
 import _ from "lodash";
 // import { MANUFACTURERS } from "data/salesPortal/products/manufacturers";
 // import { IProduct } from "data/types/product.types";

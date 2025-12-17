@@ -1,6 +1,6 @@
 import { expect, Page } from "@playwright/test";
 import { apiConfig } from "config/apiConfig";
-import { generateCustomerData } from "data/salesPortal/customers/generateCustomerData";
+import { generateCustomerData } from "data/customers/generateCustomerData";
 import { STATUS_CODES } from "data/statusCodes";
 import { ICustomer, ICustomerResponse } from "data/types/customer.types";
 import _ from "lodash";

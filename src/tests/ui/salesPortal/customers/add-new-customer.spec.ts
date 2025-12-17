@@ -11,8 +11,8 @@
 //   Требования найдете в валидационных сообщениях на фронте:)
 // Уникальное поле - Email
 
-import { generateCustomerData } from "data/salesPortal/customers/generateCustomerData";
-import { NOTIFICATIONS } from "data/salesPortal/notifications";
+import { generateCustomerData } from "data/customers/generateCustomerData";
+import { NOTIFICATIONS } from "data/notifications";
 import { TAGS } from "data/tags";
 import { expect, test } from "fixtures";
 

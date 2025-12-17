@@ -1,12 +1,16 @@
 
 # Playwright
-node_modules/
+node_modules
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
 .env
-allure-report
+.env.prod
+.env.local
 allure-results
+allure-report
 /src/.auth
+
+.DS_Store

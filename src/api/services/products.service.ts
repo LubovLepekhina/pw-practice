@@ -1,5 +1,5 @@
 import { ProductsApi } from "api/api/products.api";
-import { generateProductData } from "data/salesPortal/products/generateProductData";
+import { generateProductData } from "data/products/generateProductData";
 import { createProductSchema } from "data/schemas/products/create.schema";
 import { STATUS_CODES } from "data/statusCodes";
 import { IProduct } from "data/types/product.types";

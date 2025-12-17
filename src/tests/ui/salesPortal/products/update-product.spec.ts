@@ -10,7 +10,7 @@
 
 //   За собой удаляем продукт через апи, разумеется:)
 
-import { generateProductData } from "data/salesPortal/products/generateProductData";
+import { generateProductData } from "data/products/generateProductData";
 import { TAGS } from "data/tags";
 import { test } from "fixtures";
 

@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures/business.fixture";
-import { generateProductResponseData } from "data/salesPortal/products/generateProductData";
+import { generateProductResponseData } from "data/products/generateProductData";
 import _ from "lodash";
 import { convertToFullDateAndTime } from "utils/date.utils";
 import { TAGS } from "data/tags";

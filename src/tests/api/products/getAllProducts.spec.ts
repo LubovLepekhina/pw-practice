@@ -11,7 +11,7 @@
 import test, { expect } from "@playwright/test";
 import { apiConfig } from "config/apiConfig";
 import { credentials } from "config/env";
-import { generateProductData } from "data/salesPortal/products/generateProductData";
+import { generateProductData } from "data/products/generateProductData";
 import { getAllProductsSchema } from "data/schemas/products/getAllProducts.schema";
 import { STATUS_CODES } from "data/statusCodes";
 import { IProductFromResponse } from "api/apiClients/typesApi";

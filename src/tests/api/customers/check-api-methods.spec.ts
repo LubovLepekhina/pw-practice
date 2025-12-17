@@ -1,4 +1,4 @@
-import { generateCustomerData } from "data/salesPortal/customers/generateCustomerData";
+import { generateCustomerData } from "data/customers/generateCustomerData";
 import { STATUS_CODES } from "data/statusCodes";
 import { expect, test } from "fixtures/api.fixture";
 import _ from "lodash";

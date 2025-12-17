@@ -1,6 +1,6 @@
 import { ICustomerInTable } from "data/types/customer.types";
 import { SalesPortalPage } from "../salesPortal.page";
-import { COUNTRIES } from "data/salesPortal/customers/countries";
+import { COUNTRIES } from "data/customers/countries";
 import { logStep } from "utils/report/logStep.utils";
 
 export class CustomersListPage extends SalesPortalPage {

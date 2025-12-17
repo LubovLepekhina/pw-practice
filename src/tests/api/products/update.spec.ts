@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures/api.fixture";
-import { generateProductData } from "data/salesPortal/products/generateProductData";
+import { generateProductData } from "data/products/generateProductData";
 import { createProductSchema } from "data/schemas/products/create.schema";
 import { STATUS_CODES } from "data/statusCodes";
 import _ from "lodash";

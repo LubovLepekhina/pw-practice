@@ -1,5 +1,5 @@
 import { CustomersApi } from "api/api/customers.api";
-import { generateCustomerData } from "data/salesPortal/customers/generateCustomerData";
+import { generateCustomerData } from "data/customers/generateCustomerData";
 import { createCustomerSchema } from "data/schemas/customers/create.schema";
 import { STATUS_CODES } from "data/statusCodes";
 import { ICustomer } from "data/types/customer.types";

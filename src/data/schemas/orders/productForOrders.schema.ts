@@ -1,6 +1,6 @@
 import { MANUFACTURERS } from "data/products/manufacturers";
 
-export const productSchema = {
+export const productForOrdersSchema = {
   type: "object",
   properties: {
     _id: { type: "string" },
@@ -13,9 +13,6 @@ export const productSchema = {
     price: {
       type: "number",
     },
-    createdOn: {
-      type: "string",
-    },
     notes: {
       type: "string",
     },
@@ -23,7 +20,9 @@ export const productSchema = {
       type: "string",
       enum: Object.values(MANUFACTURERS),
     },
+    received: {
+      type: "boolean",
+    },
   },
-  required: ["_id", "name", "amount", "price", "manufacturer", "createdOn"],
-  additionalProperties: false,
+  required: ["_id", "name", "amount", "price", "manufacturer", "received"],
 };

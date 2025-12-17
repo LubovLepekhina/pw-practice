@@ -1,5 +1,5 @@
-import { createProductInvalidData, createProductValidData } from "data/salesPortal/products/createProduct.data";
-import { generateProductData } from "data/salesPortal/products/generateProductData";
+import { createProductInvalidData, createProductValidData } from "data/products/createProduct.data";
+import { generateProductData } from "data/products/generateProductData";
 import { createProductSchema } from "data/schemas/products/create.schema";
 import { STATUS_CODES } from "data/statusCodes";
 import { TAGS } from "data/tags";

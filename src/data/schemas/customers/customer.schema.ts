@@ -1,4 +1,4 @@
-import { COUNTRIES } from "data/salesPortal/customers/countries";
+import { COUNTRIES } from "data/customers/countries";
 
 export const customerSchema = {
   type: "object",

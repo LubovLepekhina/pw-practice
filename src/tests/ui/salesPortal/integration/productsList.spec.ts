@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures/business.fixture";
-import { generateProductResponseData } from "data/salesPortal/products/generateProductData";
+import { generateProductResponseData } from "data/products/generateProductData";
 import { apiConfig } from "config/apiConfig";
 import { SortOrder, ProductsSortField } from "api/apiClients/typesApi";
 import _ from "lodash";

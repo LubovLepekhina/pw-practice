@@ -7,6 +7,7 @@ import { validateResponse } from "utils/validation/validateResponse.utils";
 import { IProduct } from "data/types/product.types";
 import { TAGS } from "data/tags";
 import { RESPONSE_ERRORS } from "data/errors";
+import { createProductValidData, createProductInvalidData } from "data/products/createProduct.data";
 
 test.describe("[API] [Products]", () => {
   let id = "";
@@ -97,7 +98,7 @@ test.describe("[API] [Products]", () => {
 
     test(
       "Should not create product with invalid token",
-      { tag: [TAGS.API, TAGS.SMOKE, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
       async ({ productsApi }) => {
         const productData = generateProductData();
         const createdProduct = await productsApi.create(productData, token + "1");
@@ -109,5 +110,58 @@ test.describe("[API] [Products]", () => {
         });
       },
     );
+
+    test(
+      "Should not create product with empty request body",
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      async ({ productsApi }) => {
+        const createdProduct = await productsApi.create({} as unknown as IProduct, token);
+
+        validateResponse(createdProduct, {
+          status: STATUS_CODES.BAD_REQUEST,
+          IsSuccess: false,
+          ErrorMessage: RESPONSE_ERRORS.BAD_REQUEST,
+        });
+      },
+    );
+  });
+
+  test.describe("[Create Positive] [Field Validation]", () => {
+    for (const { title, checkingValue } of createProductValidData) {
+      test(title, { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] }, async ({ productsApi }) => {
+        const productData = generateProductData(checkingValue);
+        const createdProduct = await productsApi.create(productData, token);
+
+        validateResponse(createdProduct, {
+          status: STATUS_CODES.CREATED,
+          IsSuccess: true,
+          ErrorMessage: null,
+          schema: createProductSchema,
+        });
+        id = createdProduct.body.Product._id;
+
+        const actualProductData = createdProduct.body.Product;
+        expect(_.omit(actualProductData, ["_id", "createdOn"])).toEqual(productData);
+      });
+    }
+  });
+
+  test.describe("[Create Negative] [Field Validation]", () => {
+    for (const { title, checkingValue } of createProductInvalidData) {
+      test(title, { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] }, async ({ productsApi }) => {
+        const productData = generateProductData(checkingValue);
+        const createdProduct = await productsApi.create(productData, token);
+
+        if (createdProduct?.body?.Product?._id) {
+          id = createdProduct.body.Product._id;
+          console.warn(`Bug detected: product was created with ID ${id}`);
+        }
+        validateResponse(createdProduct, {
+          status: STATUS_CODES.BAD_REQUEST,
+          IsSuccess: false,
+          ErrorMessage: RESPONSE_ERRORS.BAD_REQUEST,
+        });
+      });
+    }
   });
 });

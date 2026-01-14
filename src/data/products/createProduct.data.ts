@@ -66,103 +66,115 @@ export const createProductValidData: { title: string; checkingValue: Partial<IPr
 
 export const createProductInvalidData: { title: string; checkingValue: Partial<IProduct> }[] = [
   {
-    title: "Create product without name",
+    title: "Should not create product without name",
     checkingValue: {
       name: undefined,
     },
   },
   {
-    title: "Create product with whitespace-only name",
+    title: "Should not create product with empty name",
+    checkingValue: {
+      name: "",
+    },
+  },
+  {
+    title: "Should not create product with whitespace-only name",
     checkingValue: {
       name: "   ",
     },
   },
   {
-    title: "Create product with name of 2 alphanumerical characters",
+    title: "Should not create product with name of 2 alphanumerical characters",
     checkingValue: {
       name: faker.string.alphanumeric({ length: 2 }),
     },
   },
   {
-    title: "Create product with name of 41 alphanumerical characters",
+    title: "Should not create product with name of 41 alphanumerical characters",
     checkingValue: {
       name: faker.string.alphanumeric({ length: 41 }),
     },
   },
   {
-    title: "Create product with multiple spaces between words in name",
+    title: "Should not create product with multiple spaces between words in name",
     checkingValue: {
       name: `${faker.string.alphanumeric({ length: 3 })} and ${faker.string.alphanumeric({ length: 13 })}`,
     },
   },
   {
-    title: "Create product without manufacturer",
+    title: "Should not create product with name with special characters",
+    checkingValue: {
+      name: faker.string.alphanumeric({ length: 10 }) + "@#$%",
+    },
+  },
+  {
+    title: "Should not create product without manufacturer",
     checkingValue: {
       manufacturer: undefined,
     },
   },
   {
-    title: "Create product without price",
+    title: "Should not create product without price",
     checkingValue: {
       price: undefined,
     },
   },
   {
-    title: "Create product without amount",
+    title: "Should not create product without amount",
     checkingValue: {
       amount: undefined,
     },
   },
   {
-    title: "Create product with price = 0",
+    title: "Should not create product with price = 0",
     checkingValue: {
       price: 0,
     },
   },
   {
-    title: "Create product with price < 0",
+    title: "Should not create product with price < 0",
     checkingValue: {
       price: -100,
     },
   },
   {
-    title: "Create product with price = 100000",
+    title: "Should not create product with price = 100000",
     checkingValue: {
       price: 100000,
     },
   },
   {
-    title: "Create product with amount < 0",
+    title: "Should not create product with amount < 0",
     checkingValue: {
       amount: -10,
     },
   },
   {
-    title: "Create product with amount = 1000",
+    title: "Should not create product with amount = 1000",
     checkingValue: {
       amount: 1000,
     },
   },
   {
-    title: "Create product with notes containing < symbol",
+    title: "Should not create product with notes containing < symbol",
     checkingValue: {
       notes: `${faker.string.alphanumeric({ length: 25 })} < ${faker.string.alphanumeric({ length: 130 })}`,
     },
   },
   {
-    title: "Create product with notes containing > symbol",
+    title: "Should not create product with notes containing > symbol",
     checkingValue: {
       notes: `${faker.string.alphanumeric({ length: 25 })} > ${faker.string.alphanumeric({ length: 130 })}`,
     },
   },
   {
-    title: "Create product with invalid data types: string in price field",
+    title: "Should not create product with invalid data types: string in price field",
     checkingValue: {
       price: "1000" as unknown as number,
     },
   },
   {
-    title: "Create product with invalid data types: string in amount field",
+    title: "Should not create product with invalid data types: string in amount field",
     checkingValue: {
       amount: "256" as unknown as number,
     },

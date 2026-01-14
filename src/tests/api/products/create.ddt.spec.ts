@@ -6,23 +6,8 @@ import { TAGS } from "data/tags";
 import { test } from "fixtures/api.fixture";
 import { validateResponse } from "utils/validation/validateResponse.utils";
 
-// Используя DDT подход, напишите тест сьют для проверки эндпоинта создания продукта:
-//   - с позитивными проверками
-//   - с негативыми проверками
-
-//   Используйте LoginApiService, ProductsApi, после каждого теста, где создастся продукт -
-// удаляйте его.
-
-//   Требования:
-//   Name: обязательное, уникальное, Products's name should contain only 3-40 alphanumerical
-// characters and one space between
-//   Manufacturer: обязательное
-//   Price: обязательное, Price should be in range 1-99999
-//   Amount: обязательное, Amount should be in range 0-999
-//   Notes: Notes should be in range 0-250 and without < or > symbols
-
-test.describe("[API] [Sales Portal] [Products] Create", () => {
-  test.describe("Positive", () => {
+test.describe("[API] [Products]", () => {
+  test.describe("[Create Positive]", () => {
     let id = "";
     let token = "";
 
@@ -35,7 +20,7 @@ test.describe("[API] [Sales Portal] [Products] Create", () => {
     });
 
     for (const { title, checkingValue } of createProductValidData) {
-      test(title, { tag: [TAGS.API, TAGS.REGRESSION] }, async ({ productsApi }) => {
+      test(title, { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] }, async ({ productsApi }) => {
         const productData = generateProductData(checkingValue);
         const createdProduct = await productsApi.create(productData, token);
         validateResponse(createdProduct, {
@@ -49,7 +34,7 @@ test.describe("[API] [Sales Portal] [Products] Create", () => {
     }
   });
 
-  test.describe("Negative", () => {
+  test.describe("[Create Negative]", () => {
     let token = "";
 
     test.beforeAll(async ({ loginApiService }) => {
@@ -57,7 +42,7 @@ test.describe("[API] [Sales Portal] [Products] Create", () => {
     });
 
     for (const { title, checkingValue } of createProductInvalidData) {
-      test(title, { tag: [TAGS.API, TAGS.REGRESSION] }, async ({ productsApi }) => {
+      test(title, { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] }, async ({ productsApi }) => {
         const productData = generateProductData(checkingValue);
         const createdProduct = await productsApi.create(productData, token);
         validateResponse(createdProduct, {

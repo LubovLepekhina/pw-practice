@@ -1,8 +1,7 @@
 import { faker } from "@faker-js/faker";
-import { IProduct } from "data/types/product.types";
+import { IProduct, IProductFromResponse } from "data/types/product.types";
 import { getRandomEnumValue } from "utils/enum.utils";
 import { MANUFACTURERS } from "./manufacturers";
-import { IProductFromResponse } from "api/apiClients/typesApi";
 import { ObjectId } from "bson";
 
 export function generateProductData(params?: Partial<IProduct>): IProduct {

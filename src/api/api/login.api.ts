@@ -1,12 +1,10 @@
-import { IApiClient, IRequestOptions, ILoginResponse } from "api/apiClients/typesApi";
+import { IApiClient, IRequestOptions } from "api/apiClients/typesApi";
 import { apiConfig } from "config/apiConfig";
-import { ICredentials } from "data/types/credentials.types";
-import { logStep } from "utils/report/logStep.utils";
+import { ICredentials, ILoginResponse } from "data/types/credentials.types";
 
 export class LoginApi {
   constructor(private apiClient: IApiClient) {}
 
-  @logStep("POST /api/login")
   async login(credentials: ICredentials) {
     const options: IRequestOptions = {
       baseURL: apiConfig.baseUrl!,

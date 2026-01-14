@@ -1,7 +1,8 @@
 import { Page } from "@playwright/test";
 import { apiConfig } from "config/apiConfig";
 import { STATUS_CODES } from "data/statusCodes";
-import { IMetricsResponse, IProductResponse, IProductsSortedResponse } from "api/apiClients/typesApi";
+import { IMetricsResponse } from "data/types/metrics.types";
+import { IProductResponse, IProductsSortedResponse } from "data/types/product.types";
 
 export class Mock {
   constructor(private page: Page) {}

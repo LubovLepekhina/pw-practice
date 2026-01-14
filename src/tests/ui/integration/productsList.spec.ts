@@ -1,11 +1,11 @@
 import { test, expect } from "fixtures/business.fixture";
 import { generateProductResponseData } from "data/products/generateProductData";
 import { apiConfig } from "config/apiConfig";
-import { SortOrder, ProductsSortField } from "api/apiClients/typesApi";
 import _ from "lodash";
 import { convertToDateAndTime } from "utils/date.utils";
-import { ProductsTableHeader } from "data/types/product.types";
+import { ProductsSortField, ProductsTableHeader } from "data/types/product.types";
 import { TAGS } from "data/tags";
+import { SortOrder } from "data/types/core.types";
 
 test.describe("[Integration] [Sales Portal] [Products] [Table Sorting]", () => {
   // test("Field: createdOn, direction: asc", async ({ loginAsAdmin, productsListPage, page, mock }) => {

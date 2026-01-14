@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
-import dotenv from "dotenv";
+import { loadEnv } from "./src/utils/env/loadEnv.utils";
 
-dotenv.config();
+loadEnv();
 
 /**
  * Read environment variables from file.
@@ -55,7 +55,7 @@ export default defineConfig({
     {
       name: "setup",
       use: { ...devices["Desktop Chrome"] },
-      testDir: "src/tests/ui/salesPortal",
+      testDir: "src/tests/ui",
       testMatch: /\.setup\.ts/,
     },
     {
@@ -66,7 +66,7 @@ export default defineConfig({
         storageState: "src/.auth/user.json",
       },
       dependencies: ["setup"],
-      testDir: "src/tests/ui/salesPortal",
+      testDir: "src/tests/ui",
     },
     {
       name: "sales-portal-api",

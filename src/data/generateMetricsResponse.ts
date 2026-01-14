@@ -1,5 +1,5 @@
-import { IMetrics, IMetricsPartial } from "api/apiClients/typesApi";
 import { faker } from "@faker-js/faker";
+import { IMetrics, IMetricsPartial } from "./types/metrics.types";
 
 export function generateMetricsResponse(params?: IMetricsPartial): IMetrics {
   return {

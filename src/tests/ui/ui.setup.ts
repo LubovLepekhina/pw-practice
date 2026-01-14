@@ -24,3 +24,17 @@ test("Login as Admin via API", async ({ page, loginApiService }) => {
   ]);
   await page.context().storageState({ path: authFile });
 });
+
+// await page.context().addCookies([
+// 	{
+// 		name: "Authorization",
+// 		value: token,
+// 		domain: "anatoly-karpovich.github.io",
+// 		path: "/aqa-course-project",
+// 		expires: "Session",
+// 		// httpOnly: false,
+// 		// secure: false,
+// 		// sameSite: "Lax",
+// 	},
+// ]);
+// await page.context().storageState({ path: authFile });

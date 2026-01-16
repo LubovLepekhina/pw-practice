@@ -19,6 +19,7 @@ test.describe("[API] [Products]", () => {
 
   test.afterEach(async ({ productsApiService }) => {
     if (id) await productsApiService.delete(token, id);
+    id = "";
   });
 
   test.describe("[Create Positive]", () => {
@@ -28,6 +29,7 @@ test.describe("[API] [Products]", () => {
       async ({ productsApi }) => {
         const productData = generateProductData();
         const createdProduct = await productsApi.create(productData, token);
+
         validateResponse(createdProduct, {
           status: STATUS_CODES.CREATED,
           schema: createProductSchema,
@@ -50,6 +52,7 @@ test.describe("[API] [Products]", () => {
       async ({ productsApi }) => {
         const productData = generateProductData();
         const createdProduct = await productsApi.create({ ...productData, name: 123 } as unknown as IProduct, token);
+
         validateResponse(createdProduct, {
           status: STATUS_CODES.BAD_REQUEST,
           IsSuccess: false,
@@ -65,6 +68,7 @@ test.describe("[API] [Products]", () => {
         const productData = generateProductData();
         const createdProduct = await productsApi.create(productData, token);
         id = createdProduct.body.Product._id;
+
         validateResponse(createdProduct, {
           status: STATUS_CODES.CREATED,
           schema: createProductSchema,

@@ -1,82 +1,82 @@
-// Написать смоук API тест на получение всех продуктов (без фильтрационных параметров)
-// со следующими шагами:
-//   - Залогиниться
-//   - Создать продукт и проверить 201й статус
-//   - Получить все продукты
-//   - создать и проверить схему
-//   - проверить статус
-//   - проверить, что в массиве тела респонса есть созданный продукт
-//   - Проверить поля IsSuccess и ErrorMessage
-
-import test, { expect } from "@playwright/test";
-import { apiConfig } from "config/apiConfig";
-import { credentials } from "config/env";
-import { generateProductData } from "data/products/generateProductData";
-import { getAllProductsSchema } from "data/schemas/products/getAllProducts.schema";
+import { test, expect } from "fixtures/api.fixture";
+import { getAllProductsSchema } from "data/schemas/products/getAll.schema";
 import { STATUS_CODES } from "data/statusCodes";
-import { IProductFromResponse } from "api/apiClients/typesApi";
-import { validateJsonSchema } from "utils/validateSchema.utils";
 import { TAGS } from "data/tags";
+import { IProductFromResponse } from "data/types/product.types";
+import { validateResponse } from "utils/validation/validateResponse.utils";
+import { RESPONSE_ERRORS } from "data/errors";
 
-const { baseUrl, endpoints } = apiConfig;
-
-test.describe("[API] [Sales Portal] [Products]", () => {
+test.describe("[API] [Products]", () => {
   let id = "";
   let token = "";
 
-  test.beforeEach(async ({ request }) => {
-    const loginResponse = await request.post(`${baseUrl}${endpoints.login}`, {
-      headers: {
-        "content-type": "application/json",
-      },
-      data: credentials,
-    });
-    token = loginResponse.headers()["authorization"]!;
-
-    expect(loginResponse.status()).toBe(STATUS_CODES.OK);
-    expect(token).toBeTruthy();
+  test.beforeAll(async ({ loginApiService }) => {
+    token = await loginApiService.loginAsAdmin();
   });
 
-  test.afterEach(async ({ request }) => {
-    const deleteResponse = await request.delete(`${baseUrl}${endpoints.productById(id)}`, {
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    expect(deleteResponse.status()).toBe(STATUS_CODES.DELETED);
+  test.afterEach(async ({ productsApiService }) => {
+    if (id) await productsApiService.delete(token, id);
   });
 
-  test("Get all products", { tag: [TAGS.API, TAGS.REGRESSION] }, async ({ request }) => {
-    //create product
-    const product = generateProductData();
-    const createResponse = await request.post(`${baseUrl}${endpoints.products}`, {
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      data: product,
-    });
-    const createResponseBody = await createResponse.json();
-    id = createResponseBody.Product._id;
-    expect(createResponse.status()).toBe(STATUS_CODES.CREATED);
+  test.describe("[Get All Positive]", () => {
+    test(
+      "Should get list of all products with valid authorization token",
+      { tag: [TAGS.API, TAGS.SMOKE, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      async ({ productsApiService, productsApi }) => {
+        const product = await productsApiService.create(token);
 
-    //get all products
-    const allProductsResponse = await request.get(`${baseUrl}${endpoints.productsAll}`, {
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const body = await allProductsResponse.json();
-    const arrOfProducts: IProductFromResponse[] = body.Products;
-    const found = arrOfProducts.some((obj) => obj.name === product.name && obj._id === id);
+        id = product._id;
 
-    //assertions
-    validateJsonSchema(body, getAllProductsSchema);
-    expect.soft(allProductsResponse.status()).toBe(STATUS_CODES.OK);
-    expect.soft(found).toBe(true);
-    expect.soft(body.IsSuccess).toBe(true);
-    expect.soft(body.ErrorMessage).toBe(null);
+        const allProductsResponse = await productsApi.getAll(token);
+
+        validateResponse(allProductsResponse, {
+          status: STATUS_CODES.OK,
+          schema: getAllProductsSchema,
+          IsSuccess: true,
+          ErrorMessage: null,
+        });
+        const arrOfProducts: IProductFromResponse[] = allProductsResponse.body.Products;
+        const found = arrOfProducts.some((obj) => obj.name === product.name && obj._id === id);
+        expect.soft(found).toBe(true);
+      },
+    );
+  });
+
+  test.describe("[Get All Negative]", () => {
+    test(
+      "Should not get list of all products without autorization token",
+      { tag: [TAGS.API, TAGS.SMOKE, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      async ({ productsApiService, productsApi }) => {
+        const product = await productsApiService.create(token);
+
+        id = product._id;
+
+        const allProductsResponse = await productsApi.getAll("");
+
+        validateResponse(allProductsResponse, {
+          status: STATUS_CODES.UNAUTHORIZED,
+          IsSuccess: false,
+          ErrorMessage: RESPONSE_ERRORS.UNAUTHORIZED,
+        });
+      },
+    );
+
+    test(
+      "Should not get list of all products with invalid token",
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      async ({ productsApiService, productsApi }) => {
+        const product = await productsApiService.create(token);
+
+        id = product._id;
+
+        const allProductsResponse = await productsApi.getAll(token + "r");
+
+        validateResponse(allProductsResponse, {
+          status: STATUS_CODES.UNAUTHORIZED,
+          IsSuccess: false,
+          ErrorMessage: RESPONSE_ERRORS.INVALID_TOKEN,
+        });
+      },
+    );
   });
 });

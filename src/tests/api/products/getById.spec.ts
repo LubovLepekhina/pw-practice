@@ -43,7 +43,7 @@ test.describe("[API] [Products]", () => {
   test.describe("[Get by Id Negative]", () => {
     test(
       "Should return 404 for non-existing product id",
-      { tag: [TAGS.API, TAGS.SMOKE, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
       async ({ productsApi }) => {
         const id = new ObjectId().toHexString();
 
@@ -76,7 +76,7 @@ test.describe("[API] [Products]", () => {
 
     test(
       "Should not get product by valid id with invalid authorization token",
-      { tag: [TAGS.API, TAGS.SMOKE, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
       async ({ productsApiService, productsApi }) => {
         const product = await productsApiService.create(token);
         id = product._id;

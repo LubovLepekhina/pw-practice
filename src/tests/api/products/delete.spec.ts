@@ -79,7 +79,7 @@ test.describe("[API] [Products]", () => {
 
     test(
       "Should return 404 for empty product id",
-      { tag: [TAGS.API, TAGS.SMOKE, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
       async ({ productsApi }) => {
         const deleteResponse = await productsApi.delete("", token);
 
@@ -91,7 +91,7 @@ test.describe("[API] [Products]", () => {
 
     test(
       "Should return 404 for non-existing product id",
-      { tag: [TAGS.API, TAGS.SMOKE, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
       async ({ productsApi }) => {
         const id = new ObjectId().toHexString();
         const deleteResponse = await productsApi.delete(id, token);

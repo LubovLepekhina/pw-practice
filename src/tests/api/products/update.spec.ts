@@ -20,7 +20,8 @@ test.describe("[API] [Products]", () => {
   });
 
   test.afterEach(async ({ productsApiService }) => {
-    await productsApiService.delete(token, id);
+    if (id) await productsApiService.delete(token, id);
+    id = "";
   });
 
   test.describe("[Update Positive]", () => {

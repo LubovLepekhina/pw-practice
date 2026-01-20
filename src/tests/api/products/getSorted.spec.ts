@@ -2,9 +2,12 @@ import { test, expect } from "fixtures/api.fixture";
 import { STATUS_CODES } from "data/statusCodes";
 import { validateResponse } from "utils/validation/validateResponse.utils";
 import { TAGS } from "data/tags";
+import { RESPONSE_ERRORS } from "data/errors";
+import { getAllProductsSchema } from "data/schemas/products/getAll.schema";
+import { ProductsSortField } from "data/types/product.types";
 
-test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
-  test.describe("Search", () => {
+test.describe("[API] [Products] [Get Sorted]", () => {
+  test.describe("[Search]", () => {
     let id = "";
     let token = "";
 
@@ -16,58 +19,72 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
       id = "";
     });
 
-    test("Search by name", { tag: [TAGS.API, TAGS.REGRESSION] }, async ({ productsApiService, productsApi }) => {
-      const product = await productsApiService.create(token);
-
-      const response = await productsApi.getSorted(token, { search: product.name });
-
-      validateResponse(response, {
-        status: STATUS_CODES.OK,
-        IsSuccess: true,
-        ErrorMessage: null,
-      });
-      const { limit, search, manufacturer, total, page, sorting } = response.body;
-      const found = response.body.Products.find((el) => el._id === product._id);
-      expect.soft(found, `Created product should be in response`).toBeTruthy();
-      expect.soft(limit, `Limit should be ${limit}`).toBe(10);
-      expect.soft(search).toBe(product.name);
-      expect.soft(manufacturer).toEqual([]);
-      expect.soft(page).toBe(1);
-      expect.soft(sorting).toEqual({ sortField: "createdOn", sortOrder: "desc" });
-      expect.soft(total).toBeGreaterThanOrEqual(1);
-    });
-
-    test("Search by price", { tag: [TAGS.API, TAGS.REGRESSION] }, async ({ productsApiService, productsApi }) => {
-      const product = await productsApiService.create(token);
-
-      const response = await productsApi.getSorted(token, { search: product.price.toString() });
-
-      validateResponse(response, {
-        status: STATUS_CODES.OK,
-        IsSuccess: true,
-        ErrorMessage: null,
-      });
-      const { limit, search, manufacturer, total, page, sorting } = response.body;
-      const found = response.body.Products.find((el) => el._id === product._id);
-      expect.soft(found, `Created product should be in response`).toBeTruthy();
-      expect.soft(limit, `Limit should be ${limit}`).toBe(10);
-      expect.soft(search).toBe(product.price.toString());
-      expect.soft(manufacturer).toEqual([]);
-      expect.soft(page).toBe(1);
-      expect.soft(sorting).toEqual({ sortField: "createdOn", sortOrder: "desc" });
-      expect.soft(total).toBeGreaterThanOrEqual(1);
-    });
-
     test(
-      "Search by manufacturer",
-      { tag: [TAGS.API, TAGS.REGRESSION] },
+      "Should return products when searching by name",
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
       async ({ productsApiService, productsApi }) => {
         const product = await productsApiService.create(token);
+        id = product._id;
+
+        const response = await productsApi.getSorted(token, { search: product.name });
+
+        validateResponse(response, {
+          status: STATUS_CODES.OK,
+          schema: getAllProductsSchema,
+          IsSuccess: true,
+          ErrorMessage: null,
+        });
+        const { limit, search, manufacturer, total, page, sorting } = response.body;
+        const found = response.body.Products.find((el) => el._id === product._id);
+        expect.soft(found, `Created product should be in response`).toBeTruthy();
+        expect.soft(limit, `Limit should be ${limit}`).toBe(10);
+        expect.soft(search).toBe(product.name);
+        expect.soft(manufacturer).toEqual([]);
+        expect.soft(page).toBe(1);
+        expect.soft(sorting).toEqual({ sortField: "createdOn", sortOrder: "desc" });
+        expect.soft(total).toBeGreaterThanOrEqual(1);
+      },
+    );
+
+    test(
+      "Should return products when searching by price",
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      async ({ productsApiService, productsApi }) => {
+        const product = await productsApiService.create(token);
+        id = product._id;
+
+        const response = await productsApi.getSorted(token, { search: product.price.toString() });
+
+        validateResponse(response, {
+          status: STATUS_CODES.OK,
+          schema: getAllProductsSchema,
+          IsSuccess: true,
+          ErrorMessage: null,
+        });
+        const { limit, search, manufacturer, total, page, sorting } = response.body;
+        const found = response.body.Products.find((el) => el._id === product._id);
+        expect.soft(found, `Created product should be in response`).toBeTruthy();
+        expect.soft(limit, `Limit should be ${limit}`).toBe(10);
+        expect.soft(search).toBe(product.price.toString());
+        expect.soft(manufacturer).toEqual([]);
+        expect.soft(page).toBe(1);
+        expect.soft(sorting).toEqual({ sortField: "createdOn", sortOrder: "desc" });
+        expect.soft(total).toBeGreaterThanOrEqual(1);
+      },
+    );
+
+    test(
+      "Should return products when searching by manufacturer",
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      async ({ productsApiService, productsApi }) => {
+        const product = await productsApiService.create(token);
+        id = product._id;
 
         const response = await productsApi.getSorted(token, { search: product.manufacturer });
 
         validateResponse(response, {
           status: STATUS_CODES.OK,
+          schema: getAllProductsSchema,
           IsSuccess: true,
           ErrorMessage: null,
         });
@@ -82,9 +99,63 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
         expect.soft(total).toBeGreaterThanOrEqual(1);
       },
     );
+
+    test(
+      "Should not return products without autorization token",
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      async ({ productsApiService, productsApi }) => {
+        const product = await productsApiService.create(token);
+        id = product._id;
+
+        const response = await productsApi.getSorted("", { search: product.name });
+
+        validateResponse(response, {
+          status: STATUS_CODES.UNAUTHORIZED,
+          IsSuccess: false,
+          ErrorMessage: RESPONSE_ERRORS.UNAUTHORIZED,
+        });
+      },
+    );
+
+    test(
+      "Should not return products with invalid token",
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      async ({ productsApiService, productsApi }) => {
+        const product = await productsApiService.create(token);
+        id = product._id;
+
+        const response = await productsApi.getSorted(token + "t", { search: product.manufacturer });
+
+        validateResponse(response, {
+          status: STATUS_CODES.UNAUTHORIZED,
+          IsSuccess: false,
+          ErrorMessage: RESPONSE_ERRORS.INVALID_TOKEN,
+        });
+      },
+    );
+
+    test(
+      "Should return empty product list when searching for a non-existing product",
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      async ({ productsApiService, productsApi }) => {
+        const product = await productsApiService.create(token);
+        id = product._id;
+
+        const response = await productsApi.getSorted(token, { search: "non-existing product" });
+
+        validateResponse(response, {
+          status: STATUS_CODES.OK,
+          schema: getAllProductsSchema,
+          IsSuccess: true,
+          ErrorMessage: null,
+        });
+        expect(response.body.Products.length).toBe(0);
+        expect(response.body.total).toBe(0);
+      },
+    );
   });
 
-  test.describe("Sorting", () => {
+  test.describe("[Sorting]", () => {
     const ids: string[] = [];
     let token = "";
 
@@ -101,8 +172,8 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
     });
 
     test(
-      "SortField: createdOn, sortOrder: asc",
-      { tag: [TAGS.API, TAGS.REGRESSION] },
+      "Should return products sorted by createdOn in ascending order",
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
       async ({ productsApiService, productsApi, page }) => {
         const product1 = await productsApiService.create(token);
         await page.waitForTimeout(1000);
@@ -114,6 +185,7 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
 
         validateResponse(response, {
           status: STATUS_CODES.OK,
+          schema: getAllProductsSchema,
           IsSuccess: true,
           ErrorMessage: null,
         });
@@ -142,8 +214,8 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
     );
 
     test(
-      "SortField: createdOn, sortOrder: desc",
-      { tag: [TAGS.API, TAGS.REGRESSION] },
+      "Should return products sorted by createdOn in descending order",
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
       async ({ productsApiService, productsApi, page }) => {
         const product1 = await productsApiService.create(token);
         await page.waitForTimeout(1000);
@@ -155,6 +227,7 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
 
         validateResponse(response, {
           status: STATUS_CODES.OK,
+          schema: getAllProductsSchema,
           IsSuccess: true,
           ErrorMessage: null,
         });
@@ -183,8 +256,8 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
     );
 
     test(
-      "SortField: manufacturer, sortOrder: desc",
-      { tag: [TAGS.API, TAGS.REGRESSION] },
+      "Should return products sorted by manufacturer in descending order",
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
       async ({ productsApiService, productsApi, page }) => {
         const product1 = await productsApiService.create(token);
         await page.waitForTimeout(1000);
@@ -196,6 +269,7 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
 
         validateResponse(response, {
           status: STATUS_CODES.OK,
+          schema: getAllProductsSchema,
           IsSuccess: true,
           ErrorMessage: null,
         });
@@ -220,6 +294,29 @@ test.describe("[API] [Sales Portal] [Products] Get Sorted", () => {
         expect.soft(pageParam).toBe(1);
         expect.soft(sorting).toEqual({ sortField: "manufacturer", sortOrder: "desc" });
         expect.soft(total).toBeGreaterThanOrEqual(2);
+      },
+    );
+
+    test(
+      "Should return 400 when sorting by unsupported field",
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.PRODUCTS] },
+      async ({ productsApiService, productsApi, page }) => {
+        const product1 = await productsApiService.create(token);
+        await page.waitForTimeout(1000);
+        const product2 = await productsApiService.create(token);
+
+        ids.push(product1._id, product2._id);
+
+        const response = await productsApi.getSorted(token, {
+          sortField: "amount" as unknown as ProductsSortField,
+          sortOrder: "desc",
+        });
+
+        validateResponse(response, {
+          status: STATUS_CODES.BAD_REQUEST,
+          IsSuccess: false,
+          ErrorMessage: null,
+        });
       },
     );
   });

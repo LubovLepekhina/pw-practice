@@ -98,7 +98,7 @@ export const createProductInvalidData: { title: string; checkingValue: Partial<I
   {
     title: "Should not create product with multiple spaces between words in name",
     checkingValue: {
-      name: `${faker.string.alphanumeric({ length: 3 })} and ${faker.string.alphanumeric({ length: 13 })}`,
+      name: `${faker.string.alphanumeric({ length: 3 })}  ${faker.string.alphanumeric({ length: 13 })}`,
     },
   },
   {

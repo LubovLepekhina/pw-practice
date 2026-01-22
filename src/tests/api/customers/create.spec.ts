@@ -1,5 +1,10 @@
-import { invalidDataTypeForApi, validDataForFieldsValidation } from "data/customers/createUpdateCustomer.data";
+import {
+  invalidDataForFieldsValidation,
+  invalidDataTypeForApi,
+  validDataForFieldsValidation,
+} from "data/customers/createUpdateCustomer.data";
 import { generateCustomerData } from "data/customers/generateCustomerData";
+import { RESPONSE_ERRORS } from "data/errors";
 import { ERROR_MESSAGES, NOTIFICATIONS } from "data/notifications";
 import { createCustomerSchema } from "data/schemas/customers/create.schema";
 import { STATUS_CODES } from "data/statusCodes";
@@ -91,6 +96,22 @@ test.describe("[API] [Customers]", () => {
       );
     }
 
+    for (const field of requiredFields) {
+      test(
+        `Should not create customer with missing required field ${field}`,
+        { tag: [TAGS.API, TAGS.REGRESSION] },
+        async ({ customersApi }) => {
+          const customerData = generateCustomerData({ [field]: undefined });
+          const createdCustomer = await customersApi.create(customerData, token);
+          validateResponse(createdCustomer, {
+            status: STATUS_CODES.BAD_REQUEST,
+            IsSuccess: false,
+            ErrorMessage: NOTIFICATIONS.CREATED_FAIL_INCORRET_REQUEST_BODY,
+          });
+        },
+      );
+    }
+
     test(
       "Should not create customer without authorization token",
       { tag: [TAGS.API, TAGS.REGRESSION] },
@@ -162,7 +183,7 @@ test.describe("[API] [Customers]", () => {
 
   test.describe("[Create Positive] [Field Validation]", () => {
     for (const { title, testCustomerData, tags } of validDataForFieldsValidation) {
-      test(title, { tag: tags }, async ({ customersApi }) => {
+      test(`Should create ${title}`, { tag: tags }, async ({ customersApi }) => {
         const createdCustomer = await customersApi.create(testCustomerData, token);
 
         validateResponse(createdCustomer, {
@@ -175,6 +196,25 @@ test.describe("[API] [Customers]", () => {
 
         const actualProductData = createdCustomer.body.Customer;
         expect(_.omit(actualProductData, ["_id", "createdOn"])).toEqual(testCustomerData);
+      });
+    }
+  });
+
+  test.describe("[Create Negative] [Field Validation]", () => {
+    for (const { title, testCustomerData, tags } of invalidDataForFieldsValidation) {
+      test(`Should not create ${title}`, { tag: tags }, async ({ customersApi }) => {
+        const createdCustomer = await customersApi.create(testCustomerData, token);
+
+        if (createdCustomer?.body?.Customer?._id) {
+          id = createdCustomer.body.Customer._id;
+          console.warn(`Bug detected: product was created with ID ${id}`);
+        }
+
+        validateResponse(createdCustomer, {
+          status: STATUS_CODES.BAD_REQUEST,
+          IsSuccess: false,
+          ErrorMessage: RESPONSE_ERRORS.BAD_REQUEST,
+        });
       });
     }
   });

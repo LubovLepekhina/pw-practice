@@ -104,13 +104,13 @@ export const validDataForFieldsValidation: ICustomerTestCase[] = [
     tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
   },
   {
-    title: "customer with street of 1 alphabetical characters",
-    testCustomerData: { ...generateCustomerData(), street: faker.string.alpha({ length: 1 }) },
+    title: "customer with street of 1 alphanumerical characters",
+    testCustomerData: { ...generateCustomerData(), street: faker.string.alphanumeric({ length: 1 }) },
     tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
   },
   {
-    title: "customer with street of 40 alphabetical characters",
-    testCustomerData: { ...generateCustomerData(), street: faker.string.alpha({ length: 40 }) },
+    title: "customer with street of 40 alphanumerical characters",
+    testCustomerData: { ...generateCustomerData(), street: faker.string.alphanumeric({ length: 40 }) },
     tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
   },
   {
@@ -173,4 +173,165 @@ export const validDataForFieldsValidation: ICustomerTestCase[] = [
   },
 ];
 
-export const invalidDataForFieldsValidation = [];
+export const invalidDataForFieldsValidation: ICustomerTestCase[] = [
+  {
+    title: "customer with name of 41 alphabetical characters",
+    testCustomerData: { ...generateCustomerData(), name: faker.string.alpha({ length: 41 }) },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with multiple spaces between words in name",
+    testCustomerData: {
+      ...generateCustomerData(),
+      name: faker.string.alpha({ length: 3 }) + "  " + faker.string.alpha({ length: 7 }),
+    },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with whitespace-only name",
+    testCustomerData: { ...generateCustomerData(), name: "   " },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with name with special characters",
+    testCustomerData: { ...generateCustomerData(), name: faker.string.alpha({ length: 7 }) + "+_-#$%@&*^!" },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with name with numbers",
+    testCustomerData: { ...generateCustomerData(), name: faker.string.alpha({ length: 7 }) + "3" },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with city of 21 alphabetic characters",
+    testCustomerData: { ...generateCustomerData(), city: faker.string.alpha({ length: 21 }) },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with city with numbers",
+    testCustomerData: { ...generateCustomerData(), city: faker.string.alpha({ length: 3 }) + "6" },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with city with special characters",
+    testCustomerData: { ...generateCustomerData(), city: faker.string.alpha({ length: 5 }) + "+_-#$%@&*^!" },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with whitespace-only city",
+    testCustomerData: { ...generateCustomerData(), city: "   " },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with multiple spaces between words in city",
+    testCustomerData: {
+      ...generateCustomerData(),
+      city: faker.string.alpha({ length: 3 }) + "  " + faker.string.alpha({ length: 7 }),
+    },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with street of 41 alphanumerical characters",
+    testCustomerData: { ...generateCustomerData(), street: faker.string.alphanumeric({ length: 41 }) },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with street with special characters",
+    testCustomerData: { ...generateCustomerData(), street: faker.string.alphanumeric({ length: 5 }) + "+_-#$%@&*^!" },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with whitespace-only street",
+    testCustomerData: { ...generateCustomerData(), street: "   " },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with multiple spaces between words in street",
+    testCustomerData: {
+      ...generateCustomerData(),
+      street: faker.string.alpha({ length: 3 }) + "  " + faker.string.alpha({ length: 7 }),
+    },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with house number - 0",
+    testCustomerData: { ...generateCustomerData(), house: 0 },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with house number - 1000",
+    testCustomerData: { ...generateCustomerData(), house: 1000 },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with house number with alphabetic characters",
+    testCustomerData: { ...generateCustomerData(), house: faker.string.alpha({ length: 3 }) } as unknown as ICustomer,
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with house number < 0",
+    testCustomerData: { ...generateCustomerData(), house: -90 },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with flat number - 0",
+    testCustomerData: { ...generateCustomerData(), flat: 0 },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with flat number - 10000",
+    testCustomerData: { ...generateCustomerData(), flat: 10000 },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with flat number with alphabetic characters",
+    testCustomerData: { ...generateCustomerData(), flat: faker.string.alpha({ length: 3 }) } as unknown as ICustomer,
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with flat number < 0",
+    testCustomerData: { ...generateCustomerData(), flat: -101 },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with phone number length < 10 digits after +",
+    testCustomerData: { ...generateCustomerData(), phone: "+123456789" },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with phone number length > 20 digits after +",
+    testCustomerData: { ...generateCustomerData(), phone: "+123456789012345678901" },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with phone number without + at the beginning",
+    testCustomerData: { ...generateCustomerData(), phone: "123456789012" },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with phone number with -",
+    testCustomerData: { ...generateCustomerData(), phone: "-123456789012" },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with notes containing < symbol",
+    testCustomerData: {
+      ...generateCustomerData(),
+      notes: `${faker.string.alphanumeric({ length: 25 })} < ${faker.string.alphanumeric({ length: 130 })}`,
+    },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with notes containing > symbol",
+    testCustomerData: {
+      ...generateCustomerData(),
+      notes: `${faker.string.alphanumeric({ length: 25 })} > ${faker.string.alphanumeric({ length: 130 })}`,
+    },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+  {
+    title: "customer with with notes of 251 characters",
+    testCustomerData: { ...generateCustomerData(), notes: faker.string.alphanumeric({ length: 251 }) },
+    tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
+  },
+];

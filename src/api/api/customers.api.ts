@@ -70,10 +70,10 @@ export class CustomersApi {
     return await this.apiClient.send<ICustomerResponse>(options);
   }
 
-  async getOrdersForCustomer(id: string, token: string) {
+  async getAllOrdersForCustomer(customerId: string, token: string) {
     const options: IRequestOptions = {
       baseURL: apiConfig.baseUrl!,
-      url: apiConfig.endpoints.customerOrders(id),
+      url: apiConfig.endpoints.customerOrders(customerId),
       method: "get",
       headers: {
         "content-type": "application/json",
@@ -84,10 +84,10 @@ export class CustomersApi {
     return await this.apiClient.send<ICustomerOrdersResponse>(options);
   }
 
-  async update(_id: string, newCustomer: ICustomer, token: string) {
+  async update(id: string, newCustomer: ICustomer, token: string) {
     const options: IRequestOptions = {
       baseURL: apiConfig.baseUrl!,
-      url: apiConfig.endpoints.customerById(_id),
+      url: apiConfig.endpoints.customerById(id),
       method: "put",
       headers: {
         "content-type": "application/json",

@@ -1,6 +1,7 @@
 import { COUNTRIES } from "data/customers/countries";
 import { ICreatedOn, ID, SortOrder } from "./core.types";
 import { IResponseFields } from "./core.types";
+import { TAGS } from "data/tags";
 
 export interface ICustomer {
   email: string;
@@ -47,4 +48,10 @@ export interface IGetCustomersParams {
   sortOrder: SortOrder;
   page: number;
   limit: number;
+}
+
+export interface ICustomerTestCase {
+  title: string;
+  testCustomerData: ICustomer;
+  tags: TAGS[];
 }

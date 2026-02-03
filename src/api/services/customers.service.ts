@@ -13,8 +13,7 @@ export class CustomersApiService {
   async create(token: string, customerData?: ICustomer) {
     const customer = generateCustomerData(customerData);
     const response = await this.customersApi.create(customer, token);
-    console.log(response.body);
-    console.log(createCustomerSchema);
+
     validateResponse(response, {
       status: STATUS_CODES.CREATED,
       IsSuccess: true,
@@ -28,6 +27,7 @@ export class CustomersApiService {
   @logStep("Delete customer via API")
   async delete(id: string, token: string) {
     const response = await this.customersApi.delete(id, token);
+
     validateResponse(response, {
       status: STATUS_CODES.DELETED,
     });

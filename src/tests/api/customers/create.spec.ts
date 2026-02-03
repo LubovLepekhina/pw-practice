@@ -1,6 +1,7 @@
 import {
   invalidDataForFieldsValidation,
   invalidDataTypeForApi,
+  requiredFields,
   validDataForFieldsValidation,
 } from "data/customers/createUpdateCustomer.data";
 import { generateCustomerData } from "data/customers/generateCustomerData";
@@ -70,16 +71,6 @@ test.describe("[API] [Customers]", () => {
   });
 
   test.describe("[Create Negative]", () => {
-    const requiredFields: (keyof ICustomer)[] = [
-      "city",
-      "country",
-      "email",
-      "flat",
-      "house",
-      "name",
-      "phone",
-      "street",
-    ];
     for (const field of requiredFields) {
       test(
         `Should not create customer with empty required field ${field}`,

@@ -3,6 +3,19 @@ import { generateCustomerData } from "data/customers/generateCustomerData";
 import { TAGS } from "data/tags";
 import { faker } from "@faker-js/faker";
 
+export const requiredFields: (keyof ICustomer)[] = [
+  "city",
+  "country",
+  "email",
+  "flat",
+  "house",
+  "name",
+  "phone",
+  "street",
+];
+
+export const allFields: (keyof ICustomer)[] = [...requiredFields, "notes"];
+
 export const invalidDataTypeForApi: ICustomerTestCase[] = [
   {
     title: "customer with invalid email data type",
@@ -330,7 +343,7 @@ export const invalidDataForFieldsValidation: ICustomerTestCase[] = [
     tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
   },
   {
-    title: "customer with with notes of 251 characters",
+    title: "customer with notes of 251 characters",
     testCustomerData: { ...generateCustomerData(), notes: faker.string.alphanumeric({ length: 251 }) },
     tags: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS],
   },

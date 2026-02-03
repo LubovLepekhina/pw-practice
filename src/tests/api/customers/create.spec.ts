@@ -30,7 +30,7 @@ test.describe("[API] [Customers]", () => {
   test.describe("[Create Positive]", () => {
     test(
       "Should create customer with valid data including all required and optional fields",
-      { tag: [TAGS.API, TAGS.SMOKE, TAGS.REGRESSION] },
+      { tag: [TAGS.API, TAGS.SMOKE, TAGS.REGRESSION, TAGS.CUSTOMERS] },
       async ({ customersApi }) => {
         const customerData = generateCustomerData();
         const createdCustomer = await customersApi.create(customerData, token);
@@ -50,7 +50,7 @@ test.describe("[API] [Customers]", () => {
 
     test(
       "Should create customer with minimal required fields",
-      { tag: [TAGS.API, TAGS.REGRESSION] },
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS] },
       async ({ customersApi }) => {
         const customerData = generateCustomerData({ notes: undefined });
         const createdCustomer = await customersApi.create(customerData, token);
@@ -83,7 +83,7 @@ test.describe("[API] [Customers]", () => {
     for (const field of requiredFields) {
       test(
         `Should not create customer with empty required field ${field}`,
-        { tag: [TAGS.API, TAGS.REGRESSION] },
+        { tag: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS] },
         async ({ customersApi }) => {
           const customerData = generateCustomerData({ [field]: "" });
           const createdCustomer = await customersApi.create(customerData, token);
@@ -99,7 +99,7 @@ test.describe("[API] [Customers]", () => {
     for (const field of requiredFields) {
       test(
         `Should not create customer with missing required field ${field}`,
-        { tag: [TAGS.API, TAGS.REGRESSION] },
+        { tag: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS] },
         async ({ customersApi }) => {
           const customerData = generateCustomerData({ [field]: undefined });
           const createdCustomer = await customersApi.create(customerData, token);
@@ -114,7 +114,7 @@ test.describe("[API] [Customers]", () => {
 
     test(
       "Should not create customer without authorization token",
-      { tag: [TAGS.API, TAGS.REGRESSION] },
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS] },
       async ({ customersApi }) => {
         const customerData = generateCustomerData();
         const createdCustomer = await customersApi.create(customerData, "");
@@ -128,7 +128,7 @@ test.describe("[API] [Customers]", () => {
 
     test(
       "Should not create customer with invalid token",
-      { tag: [TAGS.API, TAGS.REGRESSION] },
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS] },
       async ({ customersApi }) => {
         const customerData = generateCustomerData();
         const createdCustomer = await customersApi.create(customerData, token + "1");
@@ -142,7 +142,7 @@ test.describe("[API] [Customers]", () => {
 
     test(
       "Should not create customer with an email that already exists",
-      { tag: [TAGS.API, TAGS.REGRESSION] },
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS] },
       async ({ customersApi, customersApiService }) => {
         const { email, _id } = await customersApiService.create(token);
         id = _id;
@@ -158,7 +158,7 @@ test.describe("[API] [Customers]", () => {
 
     test(
       "Should not create customer with empty request body",
-      { tag: [TAGS.API, TAGS.REGRESSION] },
+      { tag: [TAGS.API, TAGS.REGRESSION, TAGS.CUSTOMERS] },
       async ({ customersApi }) => {
         const createdCustomer = await customersApi.create({} as unknown as ICustomer, token);
         validateResponse(createdCustomer, {

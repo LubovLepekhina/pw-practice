@@ -44,7 +44,7 @@ test.describe("[API] [Products]", () => {
 
   test.describe("[Get All Negative]", () => {
     test(
-      "Should not get list of all products without autorization token",
+      "Should not get list of all products without authorization token",
       { tag: [TAGS.API, TAGS.SMOKE, TAGS.REGRESSION, TAGS.PRODUCTS] },
       async ({ productsApiService, productsApi }) => {
         const product = await productsApiService.create(token);
